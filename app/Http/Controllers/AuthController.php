@@ -41,13 +41,14 @@ class AuthController extends Controller
         // Check email
         $user = User::where('email', $fields['email'])->first();
 
-        // Check password
+        // Check user exists
         if(!$user) {
             return response([
                 'message' => __('auth.failed')
             ], 401);
         }
 
+        // Check password
         if(!Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => __('auth.password')
