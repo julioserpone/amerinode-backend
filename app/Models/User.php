@@ -48,4 +48,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Scope a query to auth user.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $email
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeForLogin($query, string $email)
+    {
+        return $query->with([
+            'roles' => function ($query) {
+                $query->with('permissions');
+            },
+            'permissions'
+        ])
+            ->where('email', $email);
+    }
 }

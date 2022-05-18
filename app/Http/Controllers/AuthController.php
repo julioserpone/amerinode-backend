@@ -39,7 +39,7 @@ class AuthController extends Controller
         ]);
 
         // Check email
-        $user = User::where('email', $fields['email'])->first();
+        $user = User::ForLogin($fields['email'])->first();
 
         // Check user exists
         if(!$user) {
