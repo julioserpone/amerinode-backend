@@ -9,4 +9,17 @@ use Spatie\Permission\Traits\HasRoles;
 class Menu extends Model
 {
     use HasFactory, HasRoles;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'icon',
+        'href',
+    ];
+
+    protected $guard_name = 'api';
 }

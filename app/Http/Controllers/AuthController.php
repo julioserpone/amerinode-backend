@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -60,7 +61,8 @@ class AuthController extends Controller
 
         $response = [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'navigation' => $this->getItemMenu($user)
         ];
 
         return response($response, 201);
@@ -73,5 +75,22 @@ class AuthController extends Controller
         return [
             'message' => __('auth.logout')
         ];
+    }
+
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getItemMenu(User $user) : array {
+
+        $menu = [];
+        Menu::role($user->roles->pluck('name'))->get()->each(function ($item) use (&$menu) {
+            $menu[] = [
+                'name' => $item->name,
+                'icon' => $item->icon,
+                'href' => $item->href
+            ];
+        });
+        return $menu;
     }
 }

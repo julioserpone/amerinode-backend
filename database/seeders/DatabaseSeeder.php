@@ -16,13 +16,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            MenuSeeder::class
         ]);
 
-        User::factory()->count(10)->create()->map(function ($user) {
-            $user->assignRole(Role::select('name')->where('name', '!=', 'All')->inRandomOrder()->get()->first()->name);
-        });
+        if (env('APP_ENV') !== 'production') {
+            User::factory()->count(10)->create()->map(function ($user) {
+                $user->assignRole(Role::select('name')->where('name', '!=', 'All')->inRandomOrder()->get()->first()->name);
+            });
 
-        $user = User::factory()->superadmin()->create();
-        $user->assignRole('All');
+            $user = User::factory()->superadmin()->create();
+            $user->assignRole('All');
+        }
     }
 }
