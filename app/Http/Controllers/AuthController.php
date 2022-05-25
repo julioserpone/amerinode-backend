@@ -58,11 +58,13 @@ class AuthController extends Controller
 
         $token = $user->createToken('login')->plainTextToken;
         $user->update(['last_activity_date' => now()]);
+        $menu = $this->getItemMenu($user);
 
         $response = [
             'user' => $user,
             'token' => $token,
-            'navigation' => $this->getItemMenu($user)
+            'navigation' => $menu,
+            'defaultPage' => $menu[0]['name']
         ];
 
         return response($response, 201);
@@ -84,11 +86,13 @@ class AuthController extends Controller
     public function getItemMenu(User $user) : array {
 
         $menu = [];
-        Menu::role($user->roles->pluck('name'))->get()->each(function ($item) use (&$menu) {
+        Menu::with('roles')->role($user->roles->pluck('name'))->get()->each(function ($item) use (&$menu) {
             $menu[] = [
                 'name' => $item->name,
+                'description' => $item->description,
                 'icon' => $item->icon,
-                'href' => $item->href
+                'href' => $item->href,
+                'roles' => $item->roles->pluck('name')
             ];
         });
         return $menu;

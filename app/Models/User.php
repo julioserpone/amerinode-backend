@@ -60,10 +60,12 @@ class User extends Authenticatable
     {
         return $query->with([
             'roles' => function ($query) {
-                $query->with('permissions');
+                $query->with('permissions')->select('name');
             },
-            'permissions'
-        ])
-            ->where('email', $email);
+            'permissions' => function ($query) {
+                $query->select(['name','description']);
+            },
+        ])->where('email', $email)
+            ->select(['id','name','password','username','email','title','remember_token','last_activity_date']);
     }
 }
