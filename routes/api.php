@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,16 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Public routes
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    /*Route::post('/products', [ProductController::class, 'store']);
-    Route::put('/products/{id}', [ProductController::class, 'update']);
-    Route::delete('/products/{id}', [ProductController::class, 'destroy']);*/
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::group(['middleware' => ['role:All|Master']], function () {
+        Route::resource('users', App\Http\Controllers\UsersController::class);
+    });
+    Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
