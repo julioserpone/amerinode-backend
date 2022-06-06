@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Models\Branch;
+use App\Http\Requests\StoreBranchRequest;
+use App\Http\Requests\UpdateBranchRequest;
 
-class UsersController extends Controller
+class BranchController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return User::with('roles')->get();
+        //
     }
 
     /**
@@ -31,10 +31,10 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreUserRequest  $request
+     * @param  \App\Http\Requests\StoreBranchRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreBranchRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Branch  $branch
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Branch $branch)
     {
         //
     }
@@ -53,10 +53,10 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Branch  $branch
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Branch $branch)
     {
         //
     }
@@ -64,11 +64,11 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateUserRequest  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Http\Requests\UpdateBranchRequest  $request
+     * @param  \App\Models\Branch  $branch
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateBranchRequest $request, Branch $branch)
     {
         //
     }
@@ -76,10 +76,10 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Branch  $branch
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Branch $branch)
     {
         //
     }
