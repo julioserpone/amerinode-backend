@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->constrained('companies');
+            $table->foreignId('country_id')->constrained('countries');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

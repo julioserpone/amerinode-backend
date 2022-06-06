@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
+            $table->string('description', 50);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

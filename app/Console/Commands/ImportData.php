@@ -2,9 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Branch;
+use App\Models\Company;
+use App\Models\Country;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -31,6 +35,22 @@ class ImportData extends Command
      * @return int
      */
     public function handle()
+    {
+        $this->importRolesWithPermissions();
+        $this->importCompanies();
+        $this->insertCountries();
+        $this->importBranches();
+
+        $this->info('The process import command was successful!');
+        return 1;
+    }
+
+    /**
+     * Importing roles from SQL Server and creating permissions
+     *
+     * @return void
+     */
+    private function importRolesWithPermissions() : void
     {
         $permissions = [
             1 => ['name' => 'create-ticket', 'description' => 'Create tickets'],
@@ -135,7 +155,7 @@ class ImportData extends Command
             ]);
         }
 
-        $rolesSQL = DB::connection('sqlsrv')->select('select * from aspnet_Roles');
+        $rolesSQL = DB::connection('sqlsrv_users')->select('select * from aspnet_Roles');
         if ($rolesSQL) {
             foreach ($rolesSQL as $roleSQL) {
                 $roleConfig = Arr::first($roleWithPermissions, function($value, $key) use ($roleSQL)
@@ -169,7 +189,67 @@ class ImportData extends Command
                 }
             }
         }
-        $this->info('The process import command was successful!');
-        return 1;
+    }
+
+    /**
+     * Importing companies from SQL Server
+     *
+     * @return void
+     */
+    private function importCompanies() : void
+    {
+        $companiesSQL = DB::connection('sqlsrv_core')->select('select * from tblCompany');
+
+        if ($companiesSQL) {
+            foreach ($companiesSQL as $companySQL) {
+                Company::create([
+                    'companyId' =>  $companySQL->ID,
+                    'description' => $companySQL->Name
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Insert countries manually
+     *
+     * @return void
+     */
+    private function insertCountries() : void
+    {
+        $countries = ['Brasil', 'Peru', 'Chile', 'Mexico', 'Ecuador', 'Colombia'];
+        foreach ($countries as $country) {
+            Country::create([
+                'description' => $country
+            ]);
+        }
+    }
+
+    /**
+     * Import branches with associations from SQL Server
+     *
+     * @return void
+     */
+    private function importBranches() : void
+    {
+        $branchesSQL = DB::connection('sqlsrv_core')->select('select * from tblBranch');
+
+        if ($branchesSQL) {
+            foreach ($branchesSQL as $branchSQL) {
+                if (!Str::contains($branchSQL->Name,'AN-') && !Str::contains($branchSQL->Name,'TEF-')) {
+                    $country = Country::where('description', $branchSQL->Name)->first();
+                    if ($country) {
+                        $branch = Branch::where('company_id',$branchSQL->CompanyID)->where('country_id', $country->id)->first();
+                        $company = Company::where('companyId', $branchSQL->CompanyID)->first();
+                        if (!$branch) {
+                            Branch::create([
+                                'company_id' => $company->id,
+                                'country_id' => $country->id
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

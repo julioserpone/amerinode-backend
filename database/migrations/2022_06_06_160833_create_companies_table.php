@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
+            $table->integer('companyId');
+            $table->string('description', 50);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
