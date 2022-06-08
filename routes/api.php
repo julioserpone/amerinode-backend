@@ -19,7 +19,7 @@ Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->na
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['role:All|Master']], function () {
-        Route::resource('users', App\Http\Controllers\UsersController::class);
+        Route::resource('users', App\Http\Controllers\UserController::class);
     });
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });
