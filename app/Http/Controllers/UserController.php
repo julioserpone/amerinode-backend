@@ -11,7 +11,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
@@ -42,8 +42,8 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\Response|User
      */
     public function show(User $user): \Illuminate\Http\Response|User
     {
@@ -54,11 +54,11 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|User
      */
-    public function edit(User $user)
+    public function edit(User $user): \Illuminate\Http\Response|User
     {
-        //
+        return $user->load('roles','permissions');
     }
 
     /**
