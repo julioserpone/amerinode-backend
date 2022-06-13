@@ -20,6 +20,7 @@ Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->na
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['role:All|Master']], function () {
         Route::resource('users', App\Http\Controllers\UserController::class);
+        Route::resource('roles', App\Http\Controllers\RoleController::class);
     });
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });
