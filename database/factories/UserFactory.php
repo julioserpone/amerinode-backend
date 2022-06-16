@@ -27,7 +27,8 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'title' => $this->faker->title(),
             'work_phone' => $this->faker->phoneNumber(),
-            'mobile_phone' => $this->faker->phoneNumber()
+            'mobile_phone' => $this->faker->phoneNumber(),
+            'status' => 'active'
         ];
     }
 

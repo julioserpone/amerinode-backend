@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         if (env('APP_ENV') !== 'production') {
-            User::factory()->count(10)->create()->map(function ($user) {
+            User::factory()->count(20)->create()->map(function ($user) {
                 $user->assignRole(Role::select('name')->where('name', '!=', 'All')->inRandomOrder()->get()->first()->name);
             });
 

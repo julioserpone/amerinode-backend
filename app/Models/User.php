@@ -28,6 +28,7 @@ class User extends Authenticatable
         'mobile_phone',
         'last_activity_date',
         'password',
+        'status'
     ];
 
     /**
@@ -66,6 +67,6 @@ class User extends Authenticatable
                 $query->select(['name','description']);
             },
         ])->where('email', $email)
-            ->select(['id','name','password','username','email','title','remember_token','last_activity_date']);
+            ->select(['id','name','password','username','email','title','remember_token','last_activity_date','status']);
     }
 }
