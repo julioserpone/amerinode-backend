@@ -10,23 +10,13 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return a listing of the resource.
      *
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function index()
+    public function index(): \Illuminate\Database\Eloquent\Collection|array
     {
         return Role::with('permissions')->orderBy('name')->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -41,7 +31,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Return the specified resource.
      *
      * @param Role $role
      * @return Response|Role
@@ -52,7 +42,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Return the specified resource for editing
      *
      * @param Role $role
      * @return Response|Role
