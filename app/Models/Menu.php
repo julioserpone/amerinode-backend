@@ -22,5 +22,5 @@ class Menu extends Model
         'href',
     ];
 
-    protected $guard_name = 'api';
+    protected $guard_name = 'sanctum';
 }

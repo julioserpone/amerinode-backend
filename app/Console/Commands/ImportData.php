@@ -40,6 +40,7 @@ class ImportData extends Command
         $this->importCompanies();
         $this->insertCountries();
         $this->importBranches();
+        $this->hackGuardRoles();
 
         $this->info('The process import command was successful!');
         return 1;
@@ -188,6 +189,8 @@ class ImportData extends Command
                     }
                 }
             }
+
+
         }
     }
 
@@ -251,5 +254,17 @@ class ImportData extends Command
                 }
             }
         }
+    }
+
+    /**
+     * Hack guard name to roles package
+     *
+     * @return void
+     */
+    private function hackGuardRoles() :void
+    {
+        //Hack laravel permissions guard
+        DB::table('permissions')->update(['guard_name' => 'sanctum']);
+        DB::table('roles')->update(['guard_name' => 'sanctum']);
     }
 }
