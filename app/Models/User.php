@@ -28,7 +28,8 @@ class User extends Authenticatable
         'mobile_phone',
         'last_activity_date',
         'password',
-        'status'
+        'status',
+        'email_verified_at',
     ];
 
     /**
@@ -49,6 +50,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    protected $guard_name = 'sanctum';
 
     /**
      * Scope a query to auth user.

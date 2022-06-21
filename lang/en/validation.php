@@ -164,6 +164,15 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'user.title' => 'title',
+        'user.name' => 'name',
+        'user.username' => 'username',
+        'user.work_phone' => 'work phone',
+        'user.mobile_phone' => 'mobile phone',
+        'user.email' => 'email',
+        'user.password' => 'user password',
+        'user.password_confirmation' => 'user password confirmation',
+    ],
 
 ];

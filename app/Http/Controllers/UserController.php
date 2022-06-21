@@ -7,7 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -24,12 +24,29 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreUserRequest  $request
-     * @return Response
+     * @param StoreUserRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): JsonResponse
     {
-        //
+        $rol = data_get($request->role,'name');
+
+        $user = User::create([
+            'title' => $request->user['title'],
+            'name' => $request->user['name'],
+            'username' => $request->user['username'],
+            'mobile_phone' => $request->user['mobile_phone'],
+            'work_phone' => $request->user['work_phone'],
+            'email' => $request->user['email'],
+            'password' => Hash::make($request->user['password']),
+            'status' => $request->status['id'],
+            'email_verified_at' => now()
+        ]);
+
+        //synchronized roles
+        $user->syncRoles($rol);
+
+        return response()->json(__('user.created'));
     }
 
     /**
@@ -63,8 +80,24 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
-        //Log::info($request);
-        //Log::info($user);
+        $rol = data_get($request->role,'name');
+
+        if ($request->status['id'] == 'active') {
+            //Restore user
+            if ($user->trashed()) {
+                $user->restore();
+            }
+        } else {
+            $user->delete();
+        }
+
+        $user->update($request->user);
+        $user->status = $request->status['id'];
+        $user->save();
+
+        //synchronized roles
+        $user->syncRoles($rol);
+
         return response()->json(__('user.updated'));
     }
 
@@ -76,9 +109,9 @@ class UserController extends Controller
      */
     public function destroy(User $user): JsonResponse
     {
+        $user->delete();
         $user->status = 'inactive';
         $user->save();
-        $user->delete();
         return response()->json(__('user.deleted'));
     }
 }

@@ -2,5 +2,6 @@
 
 return [
     'updated' => 'Successfully updated user',
-    'deleted' => 'Successfully deleted user'
+    'created' => 'Successfully created user',
+    'deleted' => 'Successfully deleted user',
 ];
