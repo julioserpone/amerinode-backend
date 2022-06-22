@@ -42,7 +42,7 @@ class StoreUserRequest extends FormRequest
                 ->mixedCase()
                 ->numbers()
                 ->symbols()
-                ->uncompromised()]
+            ]
         ];
     }
 }
