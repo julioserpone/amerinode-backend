@@ -2,6 +2,10 @@
 
 return [
 
+    'verification' => [
+        'expire' => 60, // One year in minutes - enter as many minutes as you would like here
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
@@ -40,11 +41,12 @@ class UserController extends Controller
             'email' => $request->user['email'],
             'password' => Hash::make($request->user['password']),
             'status' => $request->status['id'],
-            'email_verified_at' => now()
         ]);
 
         //synchronized roles
         $user->syncRoles($rol);
+
+        event(new Registered($user));
 
         return response()->json(__('user.created'));
     }

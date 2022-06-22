@@ -5,11 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function verify($id, $hash, Request $request) {
+
+        $timeActual = (int) Carbon::now()->timestamp;
+        $timeMaxExpires = (int) $request->query('expires');
+
+        if (($timeMaxExpires - $timeActual) > 0) {
+            $user = User::findOrFail($id);
+            if ($user) {
+                if (hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+                    if (! $user->hasVerifiedEmail()) {
+                        $user->markEmailAsVerified();
+                        $user->last_activity_date = now();
+                        $user->save();
+                        //TO-DO Show view confirm verification
+                    }
+                } else {
+                    //TO-DO Hash incorrect
+                }
+            } else {
+                //TO-DO User not exist
+            }
+        } else {
+            //TO-DO Show view link expired
+        }
+    }
+
     public function register(Request $request) {
+
         $fields = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email',
