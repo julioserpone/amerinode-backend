@@ -34,6 +34,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('/roles/{role}', [App\Http\Controllers\RoleController::class, 'update'])->withTrashed()->name('roles.update');
         Route::delete('/roles/{role}', [App\Http\Controllers\RoleController::class, 'destroy'])->withTrashed()->name('roles.destroy');
 
+        Route::get('/permissions/', [App\Http\Controllers\PermissionController::class, 'index'])->name('permissions.index');
+        Route::post('/permissions/', [App\Http\Controllers\PermissionController::class, 'store'])->name('permissions.store');
+        Route::get('/permissions/{permission}', [App\Http\Controllers\PermissionController::class, 'show'])->withTrashed()->name('permissions.show');
+        Route::get('/permissions/{permission}/edit', [App\Http\Controllers\PermissionController::class, 'edit'])->withTrashed()->name('permissions.edit');
+        Route::put('/permissions/{permission}', [App\Http\Controllers\PermissionController::class, 'update'])->withTrashed()->name('permissions.update');
+        Route::delete('/permissions/{permission}', [App\Http\Controllers\PermissionController::class, 'destroy'])->withTrashed()->name('permissions.destroy');
+
     });
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });
