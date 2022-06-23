@@ -48,7 +48,7 @@ class UserController extends Controller
 
         event(new Registered($user));
 
-        return response()->json(__('user.created'));
+        return response()->json(__('notification.created', ['attribute' => 'user']));
     }
 
     /**
@@ -100,7 +100,7 @@ class UserController extends Controller
         //synchronized roles
         $user->syncRoles($rol);
 
-        return response()->json(__('user.updated'));
+        return response()->json(__('notification.updated', ['attribute' => 'user']));
     }
 
     /**
@@ -114,6 +114,6 @@ class UserController extends Controller
         $user->delete();
         $user->status = 'inactive';
         $user->save();
-        return response()->json(__('user.deleted'));
+        return response()->json(__('notification.deleted', ['attribute' => 'user']));
     }
 }
