@@ -173,6 +173,14 @@ return [
         'user.email' => 'email',
         'user.password' => 'user password',
         'user.password_confirmation' => 'user password confirmation',
+
+        'role.name' => 'name',
+        'role.guard_name' => 'guard name',
+        'role.description' => 'description',
+
+        'permission.name' => 'name',
+        'permission.guard_name' => 'guard name',
+        'permission.description' => 'description',
     ],
 
 ];
