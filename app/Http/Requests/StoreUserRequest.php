@@ -21,10 +21,9 @@ class StoreUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param Request $request
      * @return array<string, mixed>
      */
-    public function rules(Request $request)
+    public function rules()
     {
         return [
             'user.title' => 'required|max:25|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\.,\s])*$]',
