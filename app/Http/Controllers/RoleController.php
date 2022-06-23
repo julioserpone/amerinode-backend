@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Spatie\Permission\Models\Role;
 
@@ -23,11 +24,20 @@ class RoleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreRoleRequest $request
-     * @return Response
+     * @return JsonResponse
      */
-    public function store(StoreRoleRequest $request)
+    public function store(StoreRoleRequest $request): JsonResponse
     {
-        //
+        $role = Role::create([
+            'name' => $request->role['name'],
+            'description' => $request->role['description'],
+            'guard_name' => $request->role['guard_name'],
+        ]);
+
+        //synchronized permission
+        //$role->syncRoles($rol);
+
+        return response()->json(__('notification.created', ['attribute' => 'role']));
     }
 
     /**
@@ -57,21 +67,27 @@ class RoleController extends Controller
      *
      * @param UpdateRoleRequest $request
      * @param Role $role
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role): JsonResponse
     {
-        //
+        $role->update($request->role);
+        $role->status = $request->status['id'];
+        $role->save();
+
+        return response()->json(__('notification.updated', ['attribute' => 'role']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param Role $role
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role): JsonResponse
     {
-        //
+        $role->status = 'inactive';
+        $role->save();
+        return response()->json(__('notification.deleted', ['attribute' => 'role']));
     }
 }
