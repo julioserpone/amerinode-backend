@@ -29,11 +29,11 @@ class UpdatePermissionRequest extends FormRequest
             'permission.name' => [
                 'required',
                 'max:50',
-                'regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
+                'regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\-\s])*$]',
                 'unique:roles,name,'.$request['permission.id'],
             ],
             'permission.guard_name' => 'required|max:50|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
-            'permission.description' => 'required|max:100|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\.,:()\s])*$]',
+            'permission.description' => 'required|max:100|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\.,:\-()\s])*$]',
         ];
     }
 }

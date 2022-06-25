@@ -27,11 +27,11 @@ class StorePermissionRequest extends FormRequest
             'permission.name' => [
                 'required',
                 'max:50',
-                'regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
+                'regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\-\s])*$]',
                 'unique:permissions,name',
             ],
             'permission.guard_name' => 'required|max:50|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
-            'permission.description' => 'required|max:100|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\.,:()\s])*$]',
+            'permission.description' => 'required|max:100|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\.,:\-()\s])*$]',
         ];
     }
 }
