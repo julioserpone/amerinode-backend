@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -28,6 +29,8 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request): JsonResponse
     {
+        $permissions = Arr::pluck($request->permissions, 'name');
+
         $role = Role::create([
             'name' => $request->role['name'],
             'description' => $request->role['description'],
@@ -35,7 +38,7 @@ class RoleController extends Controller
         ]);
 
         //synchronized permission
-        //$role->syncRoles($rol);
+        $role->syncPermissions($permissions);
 
         return response()->json(__('notification.created', ['attribute' => 'role']));
     }
@@ -71,9 +74,14 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role): JsonResponse
     {
+        $permissions = Arr::pluck($request->permissions, 'name');
+
         $role->update($request->role);
         $role->status = $request->status['id'];
         $role->save();
+
+        //synchronized permission
+        $role->syncPermissions($permissions);
 
         return response()->json(__('notification.updated', ['attribute' => 'role']));
     }
