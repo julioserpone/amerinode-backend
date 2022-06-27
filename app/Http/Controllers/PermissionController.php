@@ -28,11 +28,14 @@ class PermissionController extends Controller
      */
     public function store(StorePermissionRequest $request): JsonResponse
     {
-        Permission::create([
+        $permission = Permission::create([
             'name' => $request->permission['name'],
             'description' => $request->permission['description'],
             'guard_name' => $request->permission['guard_name'],
         ]);
+
+        $permission->status = $request->status['id'];
+        $permission->save();
 
         return response()->json(__('notification.created', ['attribute' => 'permission']));
     }
