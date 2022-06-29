@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
 
+Route::get('/countries/available', [App\Http\Controllers\CountryController::class, 'available'])->name('countries.available');
+
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['role:All|Master']], function () {

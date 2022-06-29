@@ -8,6 +8,7 @@ use App\Models\Country;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -36,9 +37,9 @@ class ImportData extends Command
      */
     public function handle()
     {
+        $this->insertCountries();
         $this->importRolesWithPermissions();
         $this->importCompanies();
-        $this->insertCountries();
         $this->importBranches();
         $this->hackGuardRoles();
 
@@ -220,11 +221,35 @@ class ImportData extends Command
      */
     private function insertCountries() : void
     {
-        $countries = ['Brasil', 'Peru', 'Chile', 'Mexico', 'Ecuador', 'Colombia'];
-        foreach ($countries as $country) {
+        $countries = ['br', 'pe', 'cl', 'mx', 'ec', 'co'];
+
+        foreach ($countries as $code) {
+            $country = country($code);
+            $name = "";
+            $currency = "";
+            foreach ($country->get('name.native') as $data) {
+                $name = (!$name) ? $data['common'] : '';
+            }
+            foreach ($country->get('currency') as $data) {
+                $currency = (!$currency) ? $data['iso_4217_code'] : '';
+            }
+
+            Storage::disk('public')->put('flags/'.$code.'.svg', $country->getFlag());
+            $flag_url = Storage::disk('public')->url('flags/'.$code.'.svg');
+
             Country::create([
-                'description' => $country
+                'name' => $name,
+                'capital' => $country->get('capital'),
+                'code_iso' => $country->get('iso_3166_1_alpha2'),
+                'code_iso3' => $country->get('iso_3166_1_alpha3'),
+                'currency' => $currency,
+                'calling_code' => $country->get('dialling.calling_code')[0],
+                'flag_url' => $flag_url,
             ]);
+
+            //TO-DO uploading to AWS S3 not working
+            //Storage::disk('s3')->put('flags/'.$code.'.svg', $country->getFlag());
+
         }
     }
 

@@ -15,7 +15,13 @@ return new class extends Migration
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->string('description', 50);
+            $table->string('name', 80);
+            $table->string('capital', 100)->nullable();
+            $table->string('code_iso', 2)->nullable()->comment('iso_3166_1_alpha2');
+            $table->string('code_iso3', 3)->nullable()->comment('iso_3166_1_alpha3');
+            $table->string('currency', 3)->nullable()->comment('iso_4217_code');
+            $table->string('calling_code', 3)->nullable();
+            $table->string('flag_url', 80)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
