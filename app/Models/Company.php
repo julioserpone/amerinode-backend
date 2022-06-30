@@ -18,5 +18,6 @@ class Company extends Model
     protected $fillable = [
         'companyId',
         'description',
+        'status',
     ];
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('companyId');
             $table->string('description', 50);
+            $table->string('status')->default('active');
             $table->softDeletes();
             $table->timestamps();
         });
