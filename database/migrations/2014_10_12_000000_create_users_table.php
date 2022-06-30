@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('mobile_phone')->nullable();
             $table->dateTime('last_activity_date')->nullable();
             $table->string('password');
-            $table->string('status');
+            $table->string('status')->default('active');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
