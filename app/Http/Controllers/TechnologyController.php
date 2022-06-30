@@ -5,82 +5,89 @@ namespace App\Http\Controllers;
 use App\Models\Technology;
 use App\Http\Requests\StoreTechnologyRequest;
 use App\Http\Requests\UpdateTechnologyRequest;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class TechnologyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Builder[]|Collection
      */
-    public function index()
+    public function index(): Collection|array
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Technology::withTrashed()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTechnologyRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreTechnologyRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreTechnologyRequest $request)
+    public function store(StoreTechnologyRequest $request) : JsonResponse
     {
-        //
+        $technology = Technology::create([
+            'description' => $request->technology['description'],
+        ]);
+
+        $technology->status = $request->status['id'];
+        $technology->save();
+
+        return response()->json(__('notification.created', ['attribute' => 'technology']));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Technology  $technology
-     * @return \Illuminate\Http\Response
+     * @param Technology $technology
+     * @return Response|Technology
      */
-    public function show(Technology $technology)
+    public function show(Technology $technology) : Response|Technology
     {
-        //
+        return $technology;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Technology  $technology
-     * @return \Illuminate\Http\Response
+     * @param Technology $technology
+     * @return Response|Technology
      */
-    public function edit(Technology $technology)
+    public function edit(Technology $technology) : Response|Technology
     {
-        //
+        return $technology;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTechnologyRequest  $request
-     * @param  \App\Models\Technology  $technology
-     * @return \Illuminate\Http\Response
+     * @param UpdateTechnologyRequest $request
+     * @param Technology $technology
+     * @return JsonResponse
      */
-    public function update(UpdateTechnologyRequest $request, Technology $technology)
+    public function update(UpdateTechnologyRequest $request, Technology $technology) : JsonResponse
     {
-        //
+        $technology->update($request->technology);
+        $technology->status = $request->status['id'];
+        $technology->save();
+
+        return response()->json(__('notification.updated', ['attribute' => 'technology']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Technology  $technology
-     * @return \Illuminate\Http\Response
+     * @param Technology $technology
+     * @return JsonResponse
      */
-    public function destroy(Technology $technology)
+    public function destroy(Technology $technology) : JsonResponse
     {
-        //
+        $technology->status = 'inactive';
+        $technology->save();
+        return response()->json(__('notification.deleted', ['attribute' => 'technology']));
     }
 }
