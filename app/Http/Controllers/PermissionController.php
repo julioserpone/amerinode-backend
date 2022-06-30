@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Spatie\Permission\Models\Permission;
@@ -13,9 +15,9 @@ class PermissionController extends Controller
     /**
      * Return a listing of the resource.
      *
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return Builder[]|Collection
      */
-    public function index(): \Illuminate\Database\Eloquent\Collection|array
+    public function index(): Collection|array
     {
         return Permission::orderBy('name')->get();
     }
@@ -84,7 +86,7 @@ class PermissionController extends Controller
      * @param Permission $permission
      * @return JsonResponse
      */
-    public function destroy(Permission $permission): JsonResponse
+    public function destroy(Permission $permission) : JsonResponse
     {
         $permission->status = 'inactive';
         $permission->save();
