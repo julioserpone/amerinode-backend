@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('oems', function (Blueprint $table) {
             $table->id();
-            $table->integer('OemId');
+            $table->integer('OemId')->nullable();
             $table->string('description');
             $table->string('status')->default('active');
             $table->softDeletes();

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->integer('statusId');
+            $table->integer('statusId')->nullable();
             $table->string('module');
             $table->string('description');
             $table->string('status')->default('active');
