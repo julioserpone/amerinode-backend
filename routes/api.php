@@ -43,6 +43,41 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('/permissions/{permission}', [App\Http\Controllers\PermissionController::class, 'update'])->withTrashed()->name('permissions.update');
         Route::delete('/permissions/{permission}', [App\Http\Controllers\PermissionController::class, 'destroy'])->withTrashed()->name('permissions.destroy');
 
+        Route::get('/technologies/', [App\Http\Controllers\TechnologyController::class, 'index'])->name('technologies.index');
+        Route::post('/technologies/', [App\Http\Controllers\TechnologyController::class, 'store'])->name('technologies.store');
+        Route::get('/technologies/{technology}', [App\Http\Controllers\TechnologyController::class, 'show'])->withTrashed()->name('technologies.show');
+        Route::get('/technologies/{technology}/edit', [App\Http\Controllers\TechnologyController::class, 'edit'])->withTrashed()->name('technologies.edit');
+        Route::put('/technologies/{technology}', [App\Http\Controllers\TechnologyController::class, 'update'])->withTrashed()->name('technologies.update');
+        Route::delete('/technologies/{technology}', [App\Http\Controllers\TechnologyController::class, 'destroy'])->withTrashed()->name('technologies.destroy');
+
+        Route::get('/oems/', [App\Http\Controllers\OemController::class, 'index'])->name('oems.index');
+        Route::post('/oems/', [App\Http\Controllers\OemController::class, 'store'])->name('oems.store');
+        Route::get('/oems/{oem}', [App\Http\Controllers\OemController::class, 'show'])->withTrashed()->name('oems.show');
+        Route::get('/oems/{oem}/edit', [App\Http\Controllers\OemController::class, 'edit'])->withTrashed()->name('oems.edit');
+        Route::put('/oems/{oem}', [App\Http\Controllers\OemController::class, 'update'])->withTrashed()->name('oems.update');
+        Route::delete('/oems/{oem}', [App\Http\Controllers\OemController::class, 'destroy'])->withTrashed()->name('oems.destroy');
+
+        Route::get('/statuses/', [App\Http\Controllers\StatusController::class, 'index'])->name('statuses.index');
+        Route::post('/statuses/', [App\Http\Controllers\StatusController::class, 'store'])->name('statuses.store');
+        Route::get('/statuses/{status}', [App\Http\Controllers\StatusController::class, 'show'])->withTrashed()->name('statuses.show');
+        Route::get('/statuses/{status}/edit', [App\Http\Controllers\StatusController::class, 'edit'])->withTrashed()->name('statuses.edit');
+        Route::put('/statuses/{status}', [App\Http\Controllers\StatusController::class, 'update'])->withTrashed()->name('statuses.update');
+        Route::delete('/statuses/{status}', [App\Http\Controllers\StatusController::class, 'destroy'])->withTrashed()->name('statuses.destroy');
+
+        Route::get('/companies/', [App\Http\Controllers\CompanyController::class, 'index'])->name('companies.index');
+        Route::post('/companies/', [App\Http\Controllers\CompanyController::class, 'store'])->name('companies.store');
+        Route::get('/companies/{company}', [App\Http\Controllers\CompanyController::class, 'show'])->withTrashed()->name('companies.show');
+        Route::get('/companies/{company}/edit', [App\Http\Controllers\CompanyController::class, 'edit'])->withTrashed()->name('companies.edit');
+        Route::put('/companies/{company}', [App\Http\Controllers\CompanyController::class, 'update'])->withTrashed()->name('companies.update');
+        Route::delete('/companies/{company}', [App\Http\Controllers\CompanyController::class, 'destroy'])->withTrashed()->name('companies.destroy');
+
+        Route::get('/countries/', [App\Http\Controllers\CountryController::class, 'index'])->name('countries.index');
+        Route::post('/countries/', [App\Http\Controllers\CountryController::class, 'store'])->name('countries.store');
+        Route::get('/countries/{country}', [App\Http\Controllers\CountryController::class, 'show'])->withTrashed()->name('countries.show');
+        Route::get('/countries/{country}/edit', [App\Http\Controllers\CountryController::class, 'edit'])->withTrashed()->name('countries.edit');
+        Route::put('/countries/{country}', [App\Http\Controllers\CountryController::class, 'update'])->withTrashed()->name('countries.update');
+        Route::delete('/countries/{country}', [App\Http\Controllers\CountryController::class, 'destroy'])->withTrashed()->name('countries.destroy');
+
     });
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });

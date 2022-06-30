@@ -181,6 +181,8 @@ return [
         'permission.name' => 'name',
         'permission.guard_name' => 'guard name',
         'permission.description' => 'description',
+
+        'technology.description' => 'description',
     ],
 
 ];
