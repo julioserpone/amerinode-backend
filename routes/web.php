@@ -13,7 +13,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\AuthController::class, 'verify'])->name('verification.verify');
-
-Route::get('/', function () {
-    return view('welcome');
-});
