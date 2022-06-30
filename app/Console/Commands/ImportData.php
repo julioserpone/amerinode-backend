@@ -5,6 +5,9 @@ namespace App\Console\Commands;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Country;
+use App\Models\Oem;
+use App\Models\Status;
+use App\Models\Technology;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +44,9 @@ class ImportData extends Command
         $this->importRolesWithPermissions();
         $this->importCompanies();
         $this->importBranches();
+        $this->importTechnologies();
+        $this->importOEMs();
+        $this->importStatuses();
         $this->hackGuardRoles();
 
         $this->info('The process import command was successful!');
@@ -209,6 +215,78 @@ class ImportData extends Command
                 Company::create([
                     'companyId' =>  $companySQL->ID,
                     'description' => $companySQL->Name
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Importing technologies from SQL Server
+     *
+     * @return void
+     */
+    private function importTechnologies() : void
+    {
+        $technologiesSQL = DB::connection('sqlsrv_core')->select('select * from tblTechnology');
+
+        if ($technologiesSQL) {
+            foreach ($technologiesSQL as $technologySQL) {
+                Technology::create([
+                    'technologyId' =>  $technologySQL->ID,
+                    'description' => $technologySQL->Name
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Importing OEM from SQL Server
+     *
+     * @return void
+     */
+    private function importOEMs() : void
+    {
+        $OemsSQL = DB::connection('sqlsrv_core')->select('select * from tblOEM');
+
+        if ($OemsSQL) {
+            foreach ($OemsSQL as $OemSQL) {
+                Oem::create([
+                    'OemId' =>  $OemSQL->ID,
+                    'description' => $OemSQL->Name
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Importing Status from SQL Server
+     *
+     * @return void
+     */
+    private function importStatuses() : void
+    {
+        //status for tickets
+        $statusTicketsSQL = DB::connection('sqlsrv_core')->select('select * from tblStatus');
+
+        if ($statusTicketsSQL) {
+            foreach ($statusTicketsSQL as $statusSQL) {
+                Status::create([
+                    'statusId' =>  $statusSQL->ID,
+                    'module' => 'tickets',
+                    'description' => $statusSQL->Name
+                ]);
+            }
+        }
+
+        //status for laboratory
+        $statusLaboratorySQL = DB::connection('sqlsrv_core')->select('select * from tblSPMLABStatus');
+
+        if ($statusLaboratorySQL) {
+            foreach ($statusLaboratorySQL as $statusSQL) {
+                Status::create([
+                    'statusId' =>  $statusSQL->ID,
+                    'module' => 'laboratory',
+                    'description' => $statusSQL->Status
                 ]);
             }
         }
