@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('currency', 3)->nullable()->comment('iso_4217_code');
             $table->string('calling_code', 3)->nullable();
             $table->string('flag_url', 80)->nullable();
+            $table->string('status')->default('active');
             $table->softDeletes();
             $table->timestamps();
         });
