@@ -13,7 +13,7 @@ class StoreOemRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class StoreOemRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'oem.description' => 'required|max:50|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
         ];
     }
 }

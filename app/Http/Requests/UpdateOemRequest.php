@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class UpdateOemRequest extends FormRequest
 {
@@ -13,18 +14,24 @@ class UpdateOemRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
+     * @param  Request  $request
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
-            //
+            'oem.description' => [
+                'required',
+                'max:50',
+                'regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
+                'unique:oems,description,'.$request['oem.id'],
+            ],
         ];
     }
 }

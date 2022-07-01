@@ -2,85 +2,93 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Oem;
 use App\Http\Requests\StoreOemRequest;
 use App\Http\Requests\UpdateOemRequest;
+use App\Models\Oem;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class OemController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Builder[]|Collection
      */
-    public function index()
+    public function index(): Collection|array
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Oem::withTrashed()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreOemRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreOemRequest  $request
+     * @return JsonResponse
      */
-    public function store(StoreOemRequest $request)
+    public function store(StoreOemRequest $request): JsonResponse
     {
-        //
+        $oem = Oem::create([
+            'description' => $request->oem['description'],
+        ]);
+
+        $oem->status = $request->status['id'];
+        $oem->save();
+
+        return response()->json(__('notification.created', ['attribute' => 'OEM']));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Oem  $oem
-     * @return \Illuminate\Http\Response
+     * @param  Oem  $oem
+     * @return Response|Oem
      */
-    public function show(Oem $oem)
+    public function show(Oem $oem): Response|Oem
     {
-        //
+        return $oem;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Oem  $oem
-     * @return \Illuminate\Http\Response
+     * @param  Oem  $oem
+     * @return Response|Oem
      */
-    public function edit(Oem $oem)
+    public function edit(Oem $oem): Response|Oem
     {
-        //
+        return $oem;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateOemRequest  $request
-     * @param  \App\Models\Oem  $oem
-     * @return \Illuminate\Http\Response
+     * @param  UpdateOemRequest  $request
+     * @param  Oem  $oem
+     * @return JsonResponse
      */
-    public function update(UpdateOemRequest $request, Oem $oem)
+    public function update(UpdateOemRequest $request, Oem $oem): JsonResponse
     {
-        //
+        $oem->update($request->oem);
+        $oem->status = $request->status['id'];
+        $oem->save();
+
+        return response()->json(__('notification.updated', ['attribute' => 'OEM']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Oem  $oem
-     * @return \Illuminate\Http\Response
+     * @param  Oem  $oem
+     * @return JsonResponse
      */
-    public function destroy(Oem $oem)
+    public function destroy(Oem $oem): JsonResponse
     {
-        //
+        $oem->status = 'inactive';
+        $oem->save();
+
+        return response()->json(__('notification.deleted', ['attribute' => 'OEM']));
     }
 }
