@@ -29,22 +29,22 @@ class Country extends Model
     /**
      * Scope a query to countries actives.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
-    public function scopeIsActive(Builder $query) {
-
+    public function scopeIsActive(Builder $query)
+    {
         return $query->where('status', 'active');
     }
 
     /**
      * Scope a query to countries actives.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
-    public function scopeWithoutTimestamp(Builder $query) {
-
+    public function scopeWithoutTimestamp(Builder $query)
+    {
         return $query->select([
             'name',
             'capital',
@@ -52,7 +52,7 @@ class Country extends Model
             'code_iso3',
             'currency',
             'calling_code',
-            'flag_url'
+            'flag_url',
         ]);
     }
 }

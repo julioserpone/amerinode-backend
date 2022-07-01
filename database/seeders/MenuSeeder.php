@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Menu;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class MenuSeeder extends Seeder
@@ -22,70 +21,70 @@ class MenuSeeder extends Seeder
                 'icon' => 'ChartSquareBarIcon',
                 //'href' => env('APP_URL_FRONT').'/dashboard',
                 'href' => '/dashboard',
-                'roles' => ['All','Amerinode','Financial','Master','Operations'],
+                'roles' => ['All', 'Amerinode', 'Financial', 'Master', 'Operations'],
             ],
             [
                 'name' => 'TicketsPage',
                 'description' => 'Tickets',
                 'icon' => 'TicketIcon',
                 'href' => '/tickets',
-                'roles' => ['All','Amerinode','Financial','Master','Operations'],
+                'roles' => ['All', 'Amerinode', 'Financial', 'Master', 'Operations'],
             ],
             [
                 'name' => 'TicketsPackagePage',
                 'description' => 'Tickets Package',
                 'icon' => 'BriefcaseIcon',
                 'href' => '/tickets-package',
-                'roles' => ['All','Master','Project Admin'],
+                'roles' => ['All', 'Master', 'Project Admin'],
             ],
             [
                 'name' => 'ManageSLAPage',
                 'description' => 'Manage SLAs',
                 'icon' => 'PresentationChartLineIcon',
                 'href' => '/manage-sla',
-                'roles' => ['All','Master','Project Admin'],
+                'roles' => ['All', 'Master', 'Project Admin'],
             ],
             [
                 'name' => 'ParametricPage',
                 'description' => 'Parametric',
                 'icon' => 'TableIcon',
                 'href' => '/parametric',
-                'roles' => ['All','Master'],
+                'roles' => ['All', 'Master'],
             ],
             [
                 'name' => 'PermissionsPage',
                 'description' => 'Permissions',
                 'icon' => 'KeyIcon',
                 'href' => '/permissions',
-                'roles' => ['All','Master'],
+                'roles' => ['All', 'Master'],
             ],
             [
                 'name' => 'ProjectsPage',
                 'description' => 'Projects',
                 'icon' => 'FolderOpenIcon',
                 'href' => '/projects',
-                'roles' => ['All','Master','Project Admin'],
+                'roles' => ['All', 'Master', 'Project Admin'],
             ],
             [
                 'name' => 'RolesPage',
                 'description' => 'Roles',
                 'icon' => 'UserGroupIcon',
                 'href' => '/roles',
-                'roles' => ['All','Master'],
+                'roles' => ['All', 'Master'],
             ],
             [
                 'name' => 'ReportsPage',
                 'description' => 'Reports',
                 'icon' => 'DocumentReportIcon',
                 'href' => '/reports',
-                'roles' => ['All','Master','Reports'],
+                'roles' => ['All', 'Master', 'Reports'],
             ],
             [
                 'name' => 'UsersPage',
                 'description' => 'Users',
                 'icon' => 'UsersIcon',
                 'href' => '/users',
-                'roles' => ['All','Master'],
+                'roles' => ['All', 'Master'],
             ],
         ];
 

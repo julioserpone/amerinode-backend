@@ -50,6 +50,7 @@ class ImportData extends Command
         $this->hackGuardRoles();
 
         $this->info('The process import command was successful!');
+
         return 1;
     }
 
@@ -58,7 +59,7 @@ class ImportData extends Command
      *
      * @return void
      */
-    private function importRolesWithPermissions() : void
+    private function importRolesWithPermissions(): void
     {
         $permissions = [
             1 => ['name' => 'create-ticket', 'description' => 'Create tickets'],
@@ -85,69 +86,68 @@ class ImportData extends Command
         $roleWithPermissions = [
             'All' => [
                 'permissions' => '*',
-                'description' => 'Alert: User administrator with all permissions'
+                'description' => 'Alert: User administrator with all permissions',
             ],
             'Amerinode' => [
                 'permissions' => [1, 2, 3, 5, 6, 14, 15, 16],
-                'description' => 'Amerinode Internal  (cannot be deleted) for AMERINODE ONLY'
+                'description' => 'Amerinode Internal  (cannot be deleted) for AMERINODE ONLY',
             ],
             'Documents' => [
                 'permissions' => [14],
-                'description' => 'Load Project Documents'
+                'description' => 'Load Project Documents',
             ],
             'Financial' => [
                 'permissions' => [15],
-                'description' => 'Manage financial'
-            ]
-            ,
+                'description' => 'Manage financial',
+            ],
             'Master' => [
                 'permissions' => [7, 8, 10, 11, 12, 13],
-                'description' => 'Master Role (cannot be deleted) for AMERINODE ONLY'
+                'description' => 'Master Role (cannot be deleted) for AMERINODE ONLY',
             ],
             'Operations' => [
                 'permissions' => [2, 3, 5, 6],
-                'description' => 'Manages Tickets and generates Reports'
+                'description' => 'Manages Tickets and generates Reports',
             ],
             'Project Admin' => [
                 'permissions' => [17],
-                'description' => 'Project Management'
+                'description' => 'Project Management',
             ],
             'Questions' => [
                 'disabled' => true,
                 'permissions' => [],
-                'description' => 'Manage Questions'
+                'description' => 'Manage Questions',
             ],
             'Reference Tables' => [
                 'permissions' => [9],
-                'description' => 'Manages Key Reference Tables'
+                'description' => 'Manages Key Reference Tables',
             ],
             'Reports' => [
                 'permissions' => [6],
-                'description' => 'Reports Tickets'
+                'description' => 'Reports Tickets',
             ],
             'TEF Operations' => [
                 'disabled',
                 'permissions' => [],
-                'description' => 'TEF Manages Tickets and generates Reports'
+                'description' => 'TEF Manages Tickets and generates Reports',
             ],
             'TEF Reports' => [
                 'disabled',
                 'permissions' => [],
-                'description' => 'Reports TEF Peru'
+                'description' => 'Reports TEF Peru',
             ],
             'TEF Tables' => [
                 'disabled',
                 'permissions' => [],
-                'description' => 'Manage TEF Tables'
+                'description' => 'Manage TEF Tables',
             ],
             'TEF Tools' => [
                 'disabled',
                 'permissions' => [],
-                'description' => 'Admin Tools'
+                'description' => 'Admin Tools',
             ],
             'Warehouse' => [
                 'permissions' => [16],
-                'description' => 'Manages Warehouse Operations'
+                'description' => 'Manages Warehouse Operations',
             ],
         ];
 
@@ -159,15 +159,14 @@ class ImportData extends Command
             //Guard name is 'api' by default
             Permission::create([
                 'name' => $permission['name'],
-                'description' => $permission['description']
+                'description' => $permission['description'],
             ]);
         }
 
         $rolesSQL = DB::connection('sqlsrv_users')->select('select * from aspnet_Roles');
         if ($rolesSQL) {
             foreach ($rolesSQL as $roleSQL) {
-                $roleConfig = Arr::first($roleWithPermissions, function($value, $key) use ($roleSQL)
-                {
+                $roleConfig = Arr::first($roleWithPermissions, function ($value, $key) use ($roleSQL) {
                     return $key == $roleSQL->RoleName;
                 });
                 if ($roleConfig) {
@@ -177,7 +176,7 @@ class ImportData extends Command
                         'description' => $roleConfig['description'],
                     ]);
                     //If disabled, no permissions are assigned to it
-                    if (!Arr::has($roleConfig, 'disabled')) {
+                    if (! Arr::has($roleConfig, 'disabled')) {
                         //Multiples permissions are assigned
                         if (is_array($roleConfig['permissions'])) {
                             foreach ($roleConfig['permissions'] as $permission) {
@@ -189,15 +188,13 @@ class ImportData extends Command
                                 }
                             }
                         } else {
-                            if (is_string($roleConfig['permissions']) && $roleConfig['permissions'] == "*") {
+                            if (is_string($roleConfig['permissions']) && $roleConfig['permissions'] == '*') {
                                 $role->givePermissionTo(Permission::all());
                             }
                         }
                     }
                 }
             }
-
-
         }
     }
 
@@ -206,7 +203,7 @@ class ImportData extends Command
      *
      * @return void
      */
-    private function importCompanies() : void
+    private function importCompanies(): void
     {
         $companiesSQL = DB::connection('sqlsrv_core')->select('select * from tblCompany');
 
@@ -214,7 +211,7 @@ class ImportData extends Command
             foreach ($companiesSQL as $companySQL) {
                 Company::create([
                     'companyId' =>  $companySQL->ID,
-                    'description' => $companySQL->Name
+                    'description' => $companySQL->Name,
                 ]);
             }
         }
@@ -225,7 +222,7 @@ class ImportData extends Command
      *
      * @return void
      */
-    private function importTechnologies() : void
+    private function importTechnologies(): void
     {
         $technologiesSQL = DB::connection('sqlsrv_core')->select('select * from tblTechnology');
 
@@ -233,7 +230,7 @@ class ImportData extends Command
             foreach ($technologiesSQL as $technologySQL) {
                 Technology::create([
                     'technologyId' =>  $technologySQL->ID,
-                    'description' => $technologySQL->Name
+                    'description' => $technologySQL->Name,
                 ]);
             }
         }
@@ -244,7 +241,7 @@ class ImportData extends Command
      *
      * @return void
      */
-    private function importOEMs() : void
+    private function importOEMs(): void
     {
         $OemsSQL = DB::connection('sqlsrv_core')->select('select * from tblOEM');
 
@@ -252,7 +249,7 @@ class ImportData extends Command
             foreach ($OemsSQL as $OemSQL) {
                 Oem::create([
                     'OemId' =>  $OemSQL->ID,
-                    'description' => $OemSQL->Name
+                    'description' => $OemSQL->Name,
                 ]);
             }
         }
@@ -263,7 +260,7 @@ class ImportData extends Command
      *
      * @return void
      */
-    private function importStatuses() : void
+    private function importStatuses(): void
     {
         //status for tickets
         $statusTicketsSQL = DB::connection('sqlsrv_core')->select('select * from tblStatus');
@@ -273,7 +270,7 @@ class ImportData extends Command
                 Status::create([
                     'statusId' =>  $statusSQL->ID,
                     'module' => 'tickets',
-                    'description' => $statusSQL->Name
+                    'description' => $statusSQL->Name,
                 ]);
             }
         }
@@ -286,7 +283,7 @@ class ImportData extends Command
                 Status::create([
                     'statusId' =>  $statusSQL->ID,
                     'module' => 'laboratory',
-                    'description' => $statusSQL->Status
+                    'description' => $statusSQL->Status,
                 ]);
             }
         }
@@ -297,19 +294,19 @@ class ImportData extends Command
      *
      * @return void
      */
-    private function insertCountries() : void
+    private function insertCountries(): void
     {
         $countries = ['br', 'pe', 'cl', 'mx', 'ec', 'co'];
 
         foreach ($countries as $code) {
             $country = country($code);
-            $name = "";
-            $currency = "";
+            $name = '';
+            $currency = '';
             foreach ($country->get('name.native') as $data) {
-                $name = (!$name) ? $data['common'] : '';
+                $name = (! $name) ? $data['common'] : '';
             }
             foreach ($country->get('currency') as $data) {
-                $currency = (!$currency) ? $data['iso_4217_code'] : '';
+                $currency = (! $currency) ? $data['iso_4217_code'] : '';
             }
 
             Storage::disk('public')->put('flags/'.$code.'.svg', $country->getFlag());
@@ -327,7 +324,6 @@ class ImportData extends Command
 
             //TO-DO uploading to AWS S3 not working
             //Storage::disk('s3')->put('flags/'.$code.'.svg', $country->getFlag());
-
         }
     }
 
@@ -336,21 +332,21 @@ class ImportData extends Command
      *
      * @return void
      */
-    private function importBranches() : void
+    private function importBranches(): void
     {
         $branchesSQL = DB::connection('sqlsrv_core')->select('select * from tblBranch');
 
         if ($branchesSQL) {
             foreach ($branchesSQL as $branchSQL) {
-                if (!Str::contains($branchSQL->Name,'AN-') && !Str::contains($branchSQL->Name,'TEF-')) {
+                if (! Str::contains($branchSQL->Name, 'AN-') && ! Str::contains($branchSQL->Name, 'TEF-')) {
                     $country = Country::where('description', $branchSQL->Name)->first();
                     if ($country) {
-                        $branch = Branch::where('company_id',$branchSQL->CompanyID)->where('country_id', $country->id)->first();
+                        $branch = Branch::where('company_id', $branchSQL->CompanyID)->where('country_id', $country->id)->first();
                         $company = Company::where('companyId', $branchSQL->CompanyID)->first();
-                        if (!$branch) {
+                        if (! $branch) {
                             Branch::create([
                                 'company_id' => $company->id,
-                                'country_id' => $country->id
+                                'country_id' => $country->id,
                             ]);
                         }
                     }
@@ -364,7 +360,7 @@ class ImportData extends Command
      *
      * @return void
      */
-    private function hackGuardRoles() :void
+    private function hackGuardRoles(): void
     {
         //Hack laravel permissions guard
         DB::table('permissions')->update(['guard_name' => 'sanctum']);

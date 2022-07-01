@@ -51,7 +51,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-
     protected $guard_name = 'sanctum';
 
     /**
@@ -68,9 +67,9 @@ class User extends Authenticatable implements MustVerifyEmail
                 $query->with('permissions')->select('name');
             },
             'permissions' => function ($query) {
-                $query->select(['name','description']);
+                $query->select(['name', 'description']);
             },
         ])->where('email', $email)
-            ->select(['id','name','password','username','email','title','remember_token','last_activity_date','status']);
+            ->select(['id', 'name', 'password', 'username', 'email', 'title', 'remember_token', 'last_activity_date', 'status']);
     }
 }

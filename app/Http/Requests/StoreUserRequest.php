@@ -40,8 +40,8 @@ class StoreUserRequest extends FormRequest
                 ->letters()
                 ->mixedCase()
                 ->numbers()
-                ->symbols()
-            ]
+                ->symbols(),
+            ],
         ];
     }
 }

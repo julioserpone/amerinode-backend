@@ -24,7 +24,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreRoleRequest $request
+     * @param  StoreRoleRequest  $request
      * @return JsonResponse
      */
     public function store(StoreRoleRequest $request): JsonResponse
@@ -46,7 +46,7 @@ class RoleController extends Controller
     /**
      * Return the specified resource.
      *
-     * @param Role $role
+     * @param  Role  $role
      * @return Response|Role
      */
     public function show(Role $role): Response|Role
@@ -57,7 +57,7 @@ class RoleController extends Controller
     /**
      * Return the specified resource for editing
      *
-     * @param Role $role
+     * @param  Role  $role
      * @return Response|Role
      */
     public function edit(Role $role): Response|Role
@@ -68,8 +68,8 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateRoleRequest $request
-     * @param Role $role
+     * @param  UpdateRoleRequest  $request
+     * @param  Role  $role
      * @return JsonResponse
      */
     public function update(UpdateRoleRequest $request, Role $role): JsonResponse
@@ -89,13 +89,14 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Role $role
+     * @param  Role  $role
      * @return JsonResponse
      */
     public function destroy(Role $role): JsonResponse
     {
         $role->status = 'inactive';
         $role->save();
+
         return response()->json(__('notification.deleted', ['attribute' => 'role']));
     }
 }

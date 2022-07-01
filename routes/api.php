@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +20,6 @@ Route::get('/countries/available', [App\Http\Controllers\CountryController::clas
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['role:All|Master']], function () {
-
         Route::get('/users/', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
         Route::post('/users/', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
         Route::get('/users/{user}', [App\Http\Controllers\UserController::class, 'show'])->withTrashed()->name('users.show');
@@ -77,7 +75,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/countries/{country}/edit', [App\Http\Controllers\CountryController::class, 'edit'])->withTrashed()->name('countries.edit');
         Route::put('/countries/{country}', [App\Http\Controllers\CountryController::class, 'update'])->withTrashed()->name('countries.update');
         Route::delete('/countries/{country}', [App\Http\Controllers\CountryController::class, 'destroy'])->withTrashed()->name('countries.destroy');
-
     });
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });

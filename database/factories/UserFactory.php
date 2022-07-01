@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'title' => $this->faker->title(),
             'work_phone' => $this->faker->phoneNumber(),
             'mobile_phone' => $this->faker->phoneNumber(),
-            'status' => 'active'
+            'status' => 'active',
         ];
     }
 
@@ -54,7 +54,7 @@ class UserFactory extends Factory
                 'name' => 'Super Admin',
                 'username' => 'superadmin',
                 'email' => 'superadmin@domain.com',
-                'title' => 'Mr.'
+                'title' => 'Mr.',
             ];
         });
     }

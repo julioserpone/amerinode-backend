@@ -183,8 +183,8 @@ return [
         'permission.description' => 'description',
 
         'technology.description' => 'description',
-
         'company.description' => 'description',
+        'oem.description' => 'description',
     ],
 
 ];

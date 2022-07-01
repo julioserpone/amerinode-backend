@@ -25,7 +25,7 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StorePermissionRequest $request
+     * @param  StorePermissionRequest  $request
      * @return JsonResponse
      */
     public function store(StorePermissionRequest $request): JsonResponse
@@ -45,7 +45,7 @@ class PermissionController extends Controller
     /**
      * Return the specified resource.
      *
-     * @param Permission $permission
+     * @param  Permission  $permission
      * @return Response|Permission
      */
     public function show(Permission $permission): Response|Permission
@@ -56,7 +56,7 @@ class PermissionController extends Controller
     /**
      * Return the specified resource for editing
      *
-     * @param Permission $permission
+     * @param  Permission  $permission
      * @return Response|Permission
      */
     public function edit(Permission $permission): Response|Permission
@@ -67,8 +67,8 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdatePermissionRequest $request
-     * @param Permission $permission
+     * @param  UpdatePermissionRequest  $request
+     * @param  Permission  $permission
      * @return JsonResponse
      */
     public function update(UpdatePermissionRequest $request, Permission $permission): JsonResponse
@@ -83,13 +83,14 @@ class PermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Permission $permission
+     * @param  Permission  $permission
      * @return JsonResponse
      */
-    public function destroy(Permission $permission) : JsonResponse
+    public function destroy(Permission $permission): JsonResponse
     {
         $permission->status = 'inactive';
         $permission->save();
+
         return response()->json(__('notification.deleted', ['attribute' => 'permission']));
     }
 }

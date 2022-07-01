@@ -21,7 +21,7 @@ class UpdateUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array<string, mixed>
      */
     public function rules(Request $request)
@@ -41,8 +41,8 @@ class UpdateUserRequest extends FormRequest
                 ->letters()
                 ->mixedCase()
                 ->numbers()
-                ->symbols()
-            ]
+                ->symbols(),
+            ],
         ];
     }
 }

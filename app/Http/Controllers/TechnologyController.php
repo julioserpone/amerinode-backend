@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Technology;
 use App\Http\Requests\StoreTechnologyRequest;
 use App\Http\Requests\UpdateTechnologyRequest;
+use App\Models\Technology;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -25,10 +25,10 @@ class TechnologyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreTechnologyRequest $request
+     * @param  StoreTechnologyRequest  $request
      * @return JsonResponse
      */
-    public function store(StoreTechnologyRequest $request) : JsonResponse
+    public function store(StoreTechnologyRequest $request): JsonResponse
     {
         $technology = Technology::create([
             'description' => $request->technology['description'],
@@ -43,10 +43,10 @@ class TechnologyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Technology $technology
+     * @param  Technology  $technology
      * @return Response|Technology
      */
-    public function show(Technology $technology) : Response|Technology
+    public function show(Technology $technology): Response|Technology
     {
         return $technology;
     }
@@ -54,10 +54,10 @@ class TechnologyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Technology $technology
+     * @param  Technology  $technology
      * @return Response|Technology
      */
-    public function edit(Technology $technology) : Response|Technology
+    public function edit(Technology $technology): Response|Technology
     {
         return $technology;
     }
@@ -65,11 +65,11 @@ class TechnologyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateTechnologyRequest $request
-     * @param Technology $technology
+     * @param  UpdateTechnologyRequest  $request
+     * @param  Technology  $technology
      * @return JsonResponse
      */
-    public function update(UpdateTechnologyRequest $request, Technology $technology) : JsonResponse
+    public function update(UpdateTechnologyRequest $request, Technology $technology): JsonResponse
     {
         $technology->update($request->technology);
         $technology->status = $request->status['id'];
@@ -81,13 +81,14 @@ class TechnologyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Technology $technology
+     * @param  Technology  $technology
      * @return JsonResponse
      */
-    public function destroy(Technology $technology) : JsonResponse
+    public function destroy(Technology $technology): JsonResponse
     {
         $technology->status = 'inactive';
         $technology->save();
+
         return response()->json(__('notification.deleted', ['attribute' => 'technology']));
     }
 }

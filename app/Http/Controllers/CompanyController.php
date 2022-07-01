@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -25,10 +25,10 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreCompanyRequest $request
+     * @param  StoreCompanyRequest  $request
      * @return JsonResponse
      */
-    public function store(StoreCompanyRequest $request) : JsonResponse
+    public function store(StoreCompanyRequest $request): JsonResponse
     {
         $company = Company::create([
             'description' => $request->company['description'],
@@ -43,10 +43,10 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Company $company
+     * @param  Company  $company
      * @return Response|Company
      */
-    public function show(Company $company) : Response|Company
+    public function show(Company $company): Response|Company
     {
         return $company;
     }
@@ -54,10 +54,10 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Company $company
+     * @param  Company  $company
      * @return Response|Company
      */
-    public function edit(Company $company) : Response|Company
+    public function edit(Company $company): Response|Company
     {
         return $company;
     }
@@ -65,11 +65,11 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateCompanyRequest $request
-     * @param Company $company
+     * @param  UpdateCompanyRequest  $request
+     * @param  Company  $company
      * @return JsonResponse
      */
-    public function update(UpdateCompanyRequest $request, Company $company) : JsonResponse
+    public function update(UpdateCompanyRequest $request, Company $company): JsonResponse
     {
         $company->update($request->company);
         $company->status = $request->status['id'];
@@ -81,13 +81,14 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Company $company
+     * @param  Company  $company
      * @return JsonResponse
      */
-    public function destroy(Company $company) : JsonResponse
+    public function destroy(Company $company): JsonResponse
     {
         $company->status = 'inactive';
         $company->save();
+
         return response()->json(__('notification.deleted', ['attribute' => 'company']));
     }
 }

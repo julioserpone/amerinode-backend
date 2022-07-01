@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            MenuSeeder::class
+            MenuSeeder::class,
         ]);
 
         if (env('APP_ENV') !== 'production') {
