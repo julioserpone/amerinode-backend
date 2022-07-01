@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->integer('companyId');
+            $table->integer('companyId')->nullable();
             $table->string('description', 50);
             $table->string('status')->default('active');
             $table->softDeletes();
