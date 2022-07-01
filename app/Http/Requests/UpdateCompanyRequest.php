@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class UpdateCompanyRequest extends FormRequest
 {
@@ -13,18 +14,24 @@ class UpdateCompanyRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
+     * @param Request $request
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
-            //
+            'company.description' => [
+                'required',
+                'max:50',
+                'regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
+                'unique:companies,description,'.$request['company.id'],
+            ],
         ];
     }
 }

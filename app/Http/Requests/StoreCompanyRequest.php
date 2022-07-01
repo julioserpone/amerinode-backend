@@ -13,7 +13,7 @@ class StoreCompanyRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class StoreCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'company.description' => 'required|max:50|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
         ];
     }
 }
