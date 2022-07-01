@@ -185,6 +185,8 @@ return [
         'technology.description' => 'description',
         'company.description' => 'description',
         'oem.description' => 'description',
+        'data.description' => 'description',
+        'data.module' => 'module',
     ],
 
 ];
