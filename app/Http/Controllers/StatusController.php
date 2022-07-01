@@ -5,82 +5,91 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStatusRequest;
 use App\Http\Requests\UpdateStatusRequest;
 use App\Models\Status;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class StatusController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Builder[]|Collection
      */
-    public function index()
+    public function index(): Collection|array
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Status::withTrashed()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreStatusRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreStatusRequest  $request
+     * @return JsonResponse
      */
-    public function store(StoreStatusRequest $request)
+    public function store(StoreStatusRequest $request): JsonResponse
     {
-        //
+        $company = Status::create([
+            'description' => $request->data['description'],
+            'module' => $request->data['module'],
+        ]);
+
+        $company->status = $request->status['id'];
+        $company->save();
+
+        return response()->json(__('notification.created', ['attribute' => 'status']));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param  Status  $status
+     * @return Response|Status
      */
-    public function show(Status $status)
+    public function show(Status $status): Response|Status
     {
-        //
+        return $status;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param  Status  $status
+     * @return Response|Status
      */
-    public function edit(Status $status)
+    public function edit(Status $status): Response|Status
     {
-        //
+        return $status;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateStatusRequest  $request
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param  UpdateStatusRequest  $request
+     * @param  Status  $status
+     * @return JsonResponse
      */
-    public function update(UpdateStatusRequest $request, Status $status)
+    public function update(UpdateStatusRequest $request, Status $status): JsonResponse
     {
-        //
+        $status->update($request->data);
+        $status->status = $request->status['id'];
+        $status->save();
+
+        return response()->json(__('notification.updated', ['attribute' => 'status']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param  Status  $status
+     * @return JsonResponse
      */
-    public function destroy(Status $status)
+    public function destroy(Status $status): JsonResponse
     {
-        //
+        $status->status = 'inactive';
+        $status->save();
+
+        return response()->json(__('notification.deleted', ['attribute' => 'status']));
     }
 }
