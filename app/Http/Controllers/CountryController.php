@@ -5,19 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
 use App\Models\Country;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class CountryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return a listing of the resource.
      *
-     * @return Response
+     * @return Builder[]|Collection
      */
-    public function index()
+    public function index(): Collection|array
     {
-        //
+        return Country::withTrashed()->get();
     }
 
     public function available()
@@ -72,16 +75,6 @@ class CountryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  StoreCountryRequest  $request
@@ -96,22 +89,22 @@ class CountryController extends Controller
      * Display the specified resource.
      *
      * @param  Country  $country
-     * @return Response
+     * @return Response|Country
      */
-    public function show(Country $country)
+    public function show(Country $country): Response|Country
     {
-        //
+        return $country;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  Country  $country
-     * @return Response
+     * @return Response|Country
      */
-    public function edit(Country $country)
+    public function edit(Country $country): Response|Country
     {
-        //
+        return $country;
     }
 
     /**
@@ -119,21 +112,36 @@ class CountryController extends Controller
      *
      * @param  UpdateCountryRequest  $request
      * @param  Country  $country
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(UpdateCountryRequest $request, Country $country)
+    public function update(UpdateCountryRequest $request, Country $country): JsonResponse
     {
-        //
+        if ($request->status['id'] == 'active') {
+            if ($country->trashed()) {
+                $country->restore();
+            }
+        } else {
+            $country->delete();
+        }
+        $country->update($request->country);
+        $country->status = $request->status['id'];
+        $country->save();
+
+        return response()->json(__('notification.updated', ['attribute' => 'country']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  Country  $country
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy(Country $country)
+    public function destroy(Country $country): JsonResponse
     {
-        //
+        $country->delete();
+        $country->status = 'inactive';
+        $country->save();
+
+        return response()->json(__('notification.inactivated', ['attribute' => 'country']));
     }
 }

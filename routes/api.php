@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
 
-Route::get('/countries/available', [App\Http\Controllers\CountryController::class, 'available'])->name('countries.available');
+Route::get('/countries/available/public', [App\Http\Controllers\CountryController::class, 'available'])->name('countries.available.public');
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('/companies/{company}', [App\Http\Controllers\CompanyController::class, 'destroy'])->withTrashed()->name('companies.destroy');
 
         Route::get('/countries/', [App\Http\Controllers\CountryController::class, 'index'])->name('countries.index');
+        Route::get('/countries/available', [App\Http\Controllers\CountryController::class, 'available'])->name('countries.available');
         Route::post('/countries/', [App\Http\Controllers\CountryController::class, 'store'])->name('countries.store');
         Route::get('/countries/{country}', [App\Http\Controllers\CountryController::class, 'show'])->withTrashed()->name('countries.show');
         Route::get('/countries/{country}/edit', [App\Http\Controllers\CountryController::class, 'edit'])->withTrashed()->name('countries.edit');
