@@ -210,7 +210,7 @@ class ImportData extends Command
         if ($companiesSQL) {
             foreach ($companiesSQL as $companySQL) {
                 Company::create([
-                    'companyId' =>  $companySQL->ID,
+                    'companyId' => $companySQL->ID,
                     'description' => $companySQL->Name,
                 ]);
             }
@@ -229,7 +229,7 @@ class ImportData extends Command
         if ($technologiesSQL) {
             foreach ($technologiesSQL as $technologySQL) {
                 Technology::create([
-                    'technologyId' =>  $technologySQL->ID,
+                    'technologyId' => $technologySQL->ID,
                     'description' => $technologySQL->Name,
                 ]);
             }
@@ -248,7 +248,7 @@ class ImportData extends Command
         if ($OemsSQL) {
             foreach ($OemsSQL as $OemSQL) {
                 Oem::create([
-                    'OemId' =>  $OemSQL->ID,
+                    'OemId' => $OemSQL->ID,
                     'description' => $OemSQL->Name,
                 ]);
             }
@@ -268,7 +268,7 @@ class ImportData extends Command
         if ($statusTicketsSQL) {
             foreach ($statusTicketsSQL as $statusSQL) {
                 Status::create([
-                    'statusId' =>  $statusSQL->ID,
+                    'statusId' => $statusSQL->ID,
                     'module' => 'tickets',
                     'description' => $statusSQL->Name,
                 ]);
@@ -281,7 +281,7 @@ class ImportData extends Command
         if ($statusLaboratorySQL) {
             foreach ($statusLaboratorySQL as $statusSQL) {
                 Status::create([
-                    'statusId' =>  $statusSQL->ID,
+                    'statusId' => $statusSQL->ID,
                     'module' => 'laboratory',
                     'description' => $statusSQL->Status,
                 ]);
