@@ -71,6 +71,13 @@ class TechnologyController extends Controller
      */
     public function update(UpdateTechnologyRequest $request, Technology $technology): JsonResponse
     {
+        if ($request->status['id'] == 'active') {
+            if ($technology->trashed()) {
+                $technology->restore();
+            }
+        } else {
+            $technology->delete();
+        }
         $technology->update($request->technology);
         $technology->status = $request->status['id'];
         $technology->save();
@@ -86,6 +93,7 @@ class TechnologyController extends Controller
      */
     public function destroy(Technology $technology): JsonResponse
     {
+        $technology->delete();
         $technology->status = 'inactive';
         $technology->save();
 

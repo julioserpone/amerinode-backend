@@ -71,6 +71,13 @@ class OemController extends Controller
      */
     public function update(UpdateOemRequest $request, Oem $oem): JsonResponse
     {
+        if ($request->status['id'] == 'active') {
+            if ($oem->trashed()) {
+                $oem->restore();
+            }
+        } else {
+            $oem->delete();
+        }
         $oem->update($request->oem);
         $oem->status = $request->status['id'];
         $oem->save();
@@ -86,6 +93,7 @@ class OemController extends Controller
      */
     public function destroy(Oem $oem): JsonResponse
     {
+        $oem->delete();
         $oem->status = 'inactive';
         $oem->save();
 

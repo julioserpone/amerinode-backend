@@ -71,6 +71,13 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, Company $company): JsonResponse
     {
+        if ($request->status['id'] == 'active') {
+            if ($company->trashed()) {
+                $company->restore();
+            }
+        } else {
+            $company->delete();
+        }
         $company->update($request->company);
         $company->status = $request->status['id'];
         $company->save();
@@ -86,6 +93,7 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company): JsonResponse
     {
+        $company->delete();
         $company->status = 'inactive';
         $company->save();
 
