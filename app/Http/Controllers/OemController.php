@@ -97,6 +97,6 @@ class OemController extends Controller
         $oem->status = 'inactive';
         $oem->save();
 
-        return response()->json(__('notification.deleted', ['attribute' => 'OEM']));
+        return response()->json(__('notification.inactivated', ['attribute' => 'OEM']));
     }
 }

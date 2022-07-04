@@ -107,6 +107,6 @@ class StatusController extends Controller
         $status->status = 'inactive';
         $status->save();
 
-        return response()->json(__('notification.deleted', ['attribute' => 'status']));
+        return response()->json(__('notification.inactivated', ['attribute' => 'status']));
     }
 }

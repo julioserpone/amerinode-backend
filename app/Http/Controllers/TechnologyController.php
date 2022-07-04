@@ -97,6 +97,6 @@ class TechnologyController extends Controller
         $technology->status = 'inactive';
         $technology->save();
 
-        return response()->json(__('notification.deleted', ['attribute' => 'technology']));
+        return response()->json(__('notification.inactivated', ['attribute' => 'technology']));
     }
 }

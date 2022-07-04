@@ -97,6 +97,6 @@ class CompanyController extends Controller
         $company->status = 'inactive';
         $company->save();
 
-        return response()->json(__('notification.deleted', ['attribute' => 'company']));
+        return response()->json(__('notification.inactivated', ['attribute' => 'company']));
     }
 }
