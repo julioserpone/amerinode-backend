@@ -30,13 +30,17 @@ class StatusController extends Controller
      */
     public function store(StoreStatusRequest $request): JsonResponse
     {
-        $company = Status::create([
+        $duplicate = Status::duplicate($request->data)->first();
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+        $status = Status::create([
             'description' => $request->data['description'],
             'module' => $request->data['module'],
         ]);
 
-        $company->status = $request->status['id'];
-        $company->save();
+        $status->status = $request->status['id'];
+        $status->save();
 
         return response()->json(__('notification.created', ['attribute' => 'status']));
     }
@@ -72,6 +76,18 @@ class StatusController extends Controller
      */
     public function update(UpdateStatusRequest $request, Status $status): JsonResponse
     {
+        $duplicate = Status::duplicate($request->data, $status->id)->first();
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+        if ($request->status['id'] == 'active') {
+            if ($status->trashed()) {
+                $status->restore();
+            }
+        } else {
+            $status->delete();
+        }
+
         $status->update($request->data);
         $status->status = $request->status['id'];
         $status->save();
@@ -87,6 +103,7 @@ class StatusController extends Controller
      */
     public function destroy(Status $status): JsonResponse
     {
+        $status->delete();
         $status->status = 'inactive';
         $status->save();
 

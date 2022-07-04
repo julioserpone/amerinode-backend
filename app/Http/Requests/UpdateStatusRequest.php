@@ -13,7 +13,7 @@ class UpdateStatusRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class UpdateStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'data.description' => 'required|max:50|regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
+            'data.module' => 'required|max:50|regex:[^([a-zA-Z\-\_])*$]',
         ];
     }
 }
