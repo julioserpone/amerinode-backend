@@ -76,6 +76,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/countries/{country}/edit', [App\Http\Controllers\CountryController::class, 'edit'])->withTrashed()->name('countries.edit');
         Route::put('/countries/{country}', [App\Http\Controllers\CountryController::class, 'update'])->withTrashed()->name('countries.update');
         Route::delete('/countries/{country}', [App\Http\Controllers\CountryController::class, 'destroy'])->withTrashed()->name('countries.destroy');
+
+        Route::get('/branches/', [App\Http\Controllers\BranchController::class, 'index'])->name('branches.index');
+        Route::post('/branches/', [App\Http\Controllers\BranchController::class, 'store'])->name('branches.store');
+        Route::get('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'show'])->withTrashed()->name('branches.show');
+        Route::get('/branches/{branch}/edit', [App\Http\Controllers\BranchController::class, 'edit'])->withTrashed()->name('branches.edit');
+        Route::put('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'update'])->withTrashed()->name('branches.update');
+        Route::delete('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'destroy'])->withTrashed()->name('branches.destroy');
     });
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });

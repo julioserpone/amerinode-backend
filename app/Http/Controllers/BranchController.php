@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Models\Branch;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class BranchController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Builder[]|Collection
      */
-    public function index()
+    public function index(): Collection|array
     {
-        //
+        return Branch::with(['company','country'])->withTrashed()->get();
     }
 
     /**

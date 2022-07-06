@@ -19,4 +19,14 @@ class Branch extends Model
         'company_id',
         'country_id',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }
