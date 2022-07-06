@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class CountryController extends Controller
@@ -78,11 +79,25 @@ class CountryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StoreCountryRequest  $request
-     * @return Response
+     * @return JsonResponse
      */
-    public function store(StoreCountryRequest $request)
+    public function store(StoreCountryRequest $request): JsonResponse
     {
-        //
+        Log::info($request);
+        $country = Country::create([
+            'name' => $request->country['name'],
+            'capital' => $request->country['capital'],
+            'code_iso' => $request->country['code_iso'],
+            'code_iso3' => $request->country['code_iso3'],
+            'currency' => $request->country['currency'],
+            'calling_code' => $request->country['calling_code'],
+            'flag_url' => $request->country['flag_url'],
+        ]);
+
+        $country->status = $request->status['id'];
+        $country->save();
+
+        return response()->json(__('notification.created', ['attribute' => 'country']));
     }
 
     /**
