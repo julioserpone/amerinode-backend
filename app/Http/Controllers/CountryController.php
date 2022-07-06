@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class CountryController extends Controller
@@ -21,7 +20,7 @@ class CountryController extends Controller
      */
     public function index(): Collection|array
     {
-        return Country::withTrashed()->get();
+        return Country::withTrashed()->orderBy('name')->get();
     }
 
     public function available()
@@ -83,7 +82,6 @@ class CountryController extends Controller
      */
     public function store(StoreCountryRequest $request): JsonResponse
     {
-        Log::info($request);
         $country = Country::create([
             'name' => $request->country['name'],
             'capital' => $request->country['capital'],
