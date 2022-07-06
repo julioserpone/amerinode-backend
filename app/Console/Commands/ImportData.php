@@ -296,17 +296,17 @@ class ImportData extends Command
      */
     private function insertCountries(): void
     {
-        $countries = ['br', 'pe', 'cl', 'mx', 'ec', 'co'];
+        $countries = ['ar', 'br', 'pe', 'cl', 'mx', 'ec', 'co'];
 
         foreach ($countries as $code) {
             $country = country($code);
             $name = '';
             $currency = '';
             foreach ($country->get('name.native') as $data) {
-                $name = (! $name) ? $data['common'] : '';
+                $name = $data['common'] ?: '';
             }
             foreach ($country->get('currency') as $data) {
-                $currency = (! $currency) ? $data['iso_4217_code'] : '';
+                $currency = $data['iso_4217_code'] ?: '';
             }
 
             Storage::disk('public')->put('flags/'.$code.'.svg', $country->getFlag());
@@ -339,7 +339,7 @@ class ImportData extends Command
         if ($branchesSQL) {
             foreach ($branchesSQL as $branchSQL) {
                 if (! Str::contains($branchSQL->Name, 'AN-') && ! Str::contains($branchSQL->Name, 'TEF-')) {
-                    $country = Country::where('description', $branchSQL->Name)->first();
+                    $country = Country::where('name', $branchSQL->Name)->first();
                     if ($country) {
                         $branch = Branch::where('company_id', $branchSQL->CompanyID)->where('country_id', $country->id)->first();
                         $company = Company::where('companyId', $branchSQL->CompanyID)->first();
