@@ -337,9 +337,17 @@ class ImportData extends Command
         $branchesSQL = DB::connection('sqlsrv_core')->select('select * from tblBranch');
 
         if ($branchesSQL) {
+            $countries = Country::all();
             foreach ($branchesSQL as $branchSQL) {
+                $country_name = $branchSQL->Name;   //Country
                 if (! Str::contains($branchSQL->Name, 'AN-') && ! Str::contains($branchSQL->Name, 'TEF-')) {
-                    $country = Country::where('name', $branchSQL->Name)->first();
+                    $country = $countries->filter(function ($item) use ($country_name) {
+                        $str = htmlentities($item->name, ENT_COMPAT, "UTF-8");
+                        $str = preg_replace('/&([a-zA-Z])(uml|acute|grave|circ|tilde);/','$1',$str);
+                        $str = html_entity_decode($str);
+                        return $str == $country_name;
+                    })->first();
+
                     if ($country) {
                         $branch = Branch::where('company_id', $branchSQL->CompanyID)->where('country_id', $country->id)->first();
                         $company = Company::where('companyId', $branchSQL->CompanyID)->first();
