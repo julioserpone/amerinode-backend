@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateBranchRequest;
 use App\Models\Branch;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class BranchController extends Controller
 {
@@ -21,16 +23,6 @@ class BranchController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreBranchRequest  $request
@@ -42,47 +34,67 @@ class BranchController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Return the specified resource.
      *
-     * @param  \App\Models\Branch  $branch
-     * @return \Illuminate\Http\Response
+     * @param  Branch  $branch
+     * @return Response|Branch
      */
-    public function show(Branch $branch)
+    public function show(Branch $branch): Response|Branch
     {
-        //
+        return $branch->load(['country','company']);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Return the specified resource for editing
      *
-     * @param  \App\Models\Branch  $branch
-     * @return \Illuminate\Http\Response
+     * @param  Branch  $branch
+     * @return Response|Branch
      */
-    public function edit(Branch $branch)
+    public function edit(Branch $branch): Response|Branch
     {
-        //
+        return $branch->load(['country','company']);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBranchRequest  $request
-     * @param  \App\Models\Branch  $branch
-     * @return \Illuminate\Http\Response
+     * @param  UpdateBranchRequest  $request
+     * @param  Branch  $branch
+     * @return JsonResponse
      */
-    public function update(UpdateBranchRequest $request, Branch $branch)
+    public function update(UpdateBranchRequest $request, Branch $branch): JsonResponse
     {
-        //
+        return response()->json($request->country, 500);
+        $duplicate = Branch::duplicate($request->country, $request->company, $branch->id)->first();
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+        if ($request->status['id'] == 'active') {
+            if ($branch->trashed()) {
+                $branch->restore();
+            }
+        } else {
+            $branch->delete();
+        }
+        //$branch->update($request->technology);
+        $branch->status = $request->status['id'];
+        $branch->save();
+
+        return response()->json(__('notification.updated', ['attribute' => 'technology']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Branch  $branch
-     * @return \Illuminate\Http\Response
+     * @param  Branch  $branch
+     * @return JsonResponse
      */
-    public function destroy(Branch $branch)
+    public function destroy(Branch $branch): JsonResponse
     {
-        //
+        $branch->delete();
+        $branch->status = 'inactive';
+        $branch->save();
+
+        return response()->json(__('notification.inactivated', ['attribute' => 'branch']));
     }
 }
