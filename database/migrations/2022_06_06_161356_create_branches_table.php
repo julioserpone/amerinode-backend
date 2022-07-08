@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
+            $table->integer('branchId')->nullable();
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('country_id')->constrained('countries');
             $table->string('status')->default('active');
