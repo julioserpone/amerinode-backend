@@ -6,6 +6,8 @@ use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Country;
 use App\Models\Oem;
+use App\Models\ProjectType;
+use App\Models\ServiceType;
 use App\Models\Status;
 use App\Models\Technology;
 use Illuminate\Console\Command;
@@ -47,6 +49,8 @@ class ImportData extends Command
         $this->importTechnologies();
         $this->importOEMs();
         $this->importStatuses();
+        $this->importServiceTypes();
+        $this->importProjectTypes();
         $this->hackGuardRoles();
 
         $this->info('The process import command was successful!');
@@ -342,9 +346,10 @@ class ImportData extends Command
                 $country_name = $branchSQL->Name;   //Country
                 if (! Str::contains($branchSQL->Name, 'AN-') && ! Str::contains($branchSQL->Name, 'TEF-')) {
                     $country = $countries->filter(function ($item) use ($country_name) {
-                        $str = htmlentities($item->name, ENT_COMPAT, "UTF-8");
-                        $str = preg_replace('/&([a-zA-Z])(uml|acute|grave|circ|tilde);/','$1',$str);
+                        $str = htmlentities($item->name, ENT_COMPAT, 'UTF-8');
+                        $str = preg_replace('/&([a-zA-Z])(uml|acute|grave|circ|tilde);/', '$1', $str);
                         $str = html_entity_decode($str);
+
                         return $str == $country_name;
                     })->first();
 
@@ -353,12 +358,50 @@ class ImportData extends Command
                         $company = Company::where('companyId', $branchSQL->CompanyID)->first();
                         if (! $branch) {
                             Branch::create([
+                                'branchId' => $branchSQL->ID,
                                 'company_id' => $company->id,
                                 'country_id' => $country->id,
                             ]);
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Importing Service types from SQL Server
+     *
+     * @return void
+     */
+    private function importServiceTypes(): void
+    {
+        $serviceTypesSQL = DB::connection('sqlsrv_core')->select('select * from tblService');
+
+        if ($serviceTypesSQL) {
+            foreach ($serviceTypesSQL as $serviceTypeSQL) {
+                ServiceType::create([
+                    'description' => $serviceTypeSQL->Service,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Importing Project types from SQL Server
+     *
+     * @return void
+     */
+    private function importProjectTypes(): void
+    {
+        $projectTypesSQL = DB::connection('sqlsrv_core')->select('select * from tblProjectType');
+
+        if ($projectTypesSQL) {
+            foreach ($projectTypesSQL as $projectTypeSQL) {
+                ProjectType::create([
+                    'service_type_id' => ServiceType::where('description', $projectTypeSQL->Service)->first()->id,
+                    'description' => $projectTypeSQL->ProjectType,
+                ]);
             }
         }
     }
