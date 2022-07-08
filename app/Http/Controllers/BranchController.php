@@ -19,7 +19,7 @@ class BranchController extends Controller
      */
     public function index(): Collection|array
     {
-        return Branch::with(['company','country'])->withTrashed()->get();
+        return Branch::with(['company', 'country'])->withTrashed()->get();
     }
 
     /**
@@ -41,7 +41,7 @@ class BranchController extends Controller
      */
     public function show(Branch $branch): Response|Branch
     {
-        return $branch->load(['country','company']);
+        return $branch->load(['country', 'company']);
     }
 
     /**
@@ -52,7 +52,7 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch): Response|Branch
     {
-        return $branch->load(['country','company']);
+        return $branch->load(['country', 'company']);
     }
 
     /**
