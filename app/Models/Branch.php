@@ -17,8 +17,10 @@ class Branch extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'branchId',
         'company_id',
         'country_id',
+        'status',
     ];
 
     public function company()
@@ -33,8 +35,8 @@ class Branch extends Model
 
     /**
      * @param  Builder  $query
-     * @param  array  country
-     * @param  array  company
+     * @param  array  $country
+     * @param  array  $company
      * @param  string|null  $id
      * @return Builder
      */
