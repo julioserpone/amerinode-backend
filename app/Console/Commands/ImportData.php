@@ -420,6 +420,7 @@ class ImportData extends Command
         if ($projectsSQL) {
             foreach ($projectsSQL as $projectSQL) {
                 Project::create([
+                    'projectId' => $projectSQL->ID,
                     'project_type_id' => ProjectType::where('description', $projectSQL->ProjectType)->first()->id,
                     'branch_id' => Branch::where('branchId', $projectSQL->BranchID2)->first()->id,
                     'name' => $projectSQL->Project,

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->integer('projectId')->nullable();
             $table->foreignId('project_type_id')->constrained('project_types');
             $table->foreignId('branch_id')->constrained('branches');
             $table->string('name', 100);
