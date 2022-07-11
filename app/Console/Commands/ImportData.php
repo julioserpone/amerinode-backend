@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Country;
 use App\Models\Oem;
+use App\Models\Project;
 use App\Models\ProjectType;
 use App\Models\ServiceType;
 use App\Models\Status;
@@ -51,6 +52,7 @@ class ImportData extends Command
         $this->importStatuses();
         $this->importServiceTypes();
         $this->importProjectTypes();
+        $this->importProjects();
         $this->hackGuardRoles();
 
         $this->info('The process import command was successful!');
@@ -401,6 +403,27 @@ class ImportData extends Command
                 ProjectType::create([
                     'service_type_id' => ServiceType::where('description', $projectTypeSQL->Service)->first()->id,
                     'description' => $projectTypeSQL->ProjectType,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Importing Projects from SQL Server
+     *
+     * @return void
+     */
+    private function importProjects(): void
+    {
+        $projectsSQL = DB::connection('sqlsrv_core')->select('select * from tblProject');
+
+        if ($projectsSQL) {
+            foreach ($projectsSQL as $projectSQL) {
+                Project::create([
+                    'project_type_id' => ProjectType::where('description', $projectSQL->ProjectType)->first()->id,
+                    'branch_id' => Branch::where('branchId', $projectSQL->BranchID2)->first()->id,
+                    'name' => $projectSQL->Project,
+                    'description' => $projectSQL->Description,
                 ]);
             }
         }
