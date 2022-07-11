@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,5 +34,17 @@ class Project extends Model
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function scopeListAllOrdered(Builder $query)
+    {
+        $query->with([
+            'projectType' => function ($q) {
+                $q->with('serviceType');
+            },
+            'branch' => function ($q) {
+                $q->with(['company', 'country']);
+            }
+        ])->orderBy('name');
     }
 }
