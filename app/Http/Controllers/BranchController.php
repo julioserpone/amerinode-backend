@@ -19,18 +19,30 @@ class BranchController extends Controller
      */
     public function index(): Collection|array
     {
-        return Branch::with(['company', 'country'])->withTrashed()->get();
+        return Branch::listAllOrdered()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBranchRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreBranchRequest  $request
+     * @return JsonResponse
      */
-    public function store(StoreBranchRequest $request)
+    public function store(StoreBranchRequest $request): JsonResponse
     {
-        //
+        $duplicate = Branch::duplicate($request->country, $request->company)->first();
+
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+
+        Branch::create([
+            'country_id' => $request->country['id'],
+            'company_id' => $request->company['id'],
+            'status' => $request->status['id'],
+        ]);
+
+        return response()->json(__('notification.created', ['attribute' => 'branch']));
     }
 
     /**
@@ -64,7 +76,6 @@ class BranchController extends Controller
      */
     public function update(UpdateBranchRequest $request, Branch $branch): JsonResponse
     {
-        return response()->json($request->country, 500);
         $duplicate = Branch::duplicate($request->country, $request->company, $branch->id)->first();
         if ($duplicate) {
             return response()->json(['message' => __('notification.duplicated')], 409);
@@ -76,11 +87,14 @@ class BranchController extends Controller
         } else {
             $branch->delete();
         }
-        //$branch->update($request->technology);
+        $branch->update([
+            'country_id' => $request->country['id'],
+            'company_id' => $request->company['id'],
+        ]);
         $branch->status = $request->status['id'];
         $branch->save();
 
-        return response()->json(__('notification.updated', ['attribute' => 'technology']));
+        return response()->json(__('notification.updated', ['attribute' => 'branch']));
     }
 
     /**
