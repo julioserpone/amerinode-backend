@@ -84,5 +84,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'update'])->withTrashed()->name('branches.update');
         Route::delete('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'destroy'])->withTrashed()->name('branches.destroy');
     });
+
+    Route::group(['middleware' => ['role:All|Project Admin']], function () {
+        Route::get('/projects/', [App\Http\Controllers\ProjectController::class, 'index'])->name('projects.index');
+        Route::post('/projects/', [App\Http\Controllers\ProjectController::class, 'store'])->name('projects.store');
+        Route::get('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'show'])->withTrashed()->name('projects.show');
+        Route::get('/projects/{project}/edit', [App\Http\Controllers\ProjectController::class, 'edit'])->withTrashed()->name('projects.edit');
+        Route::put('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'update'])->withTrashed()->name('projects.update');
+        Route::delete('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'destroy'])->withTrashed()->name('projects.destroy');
+    });
+
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });
