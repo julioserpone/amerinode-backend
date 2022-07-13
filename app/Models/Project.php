@@ -36,15 +36,20 @@ class Project extends Model
         return $this->belongsTo(Branch::class);
     }
 
-    public function scopeListAllOrdered(Builder $query)
+    public function relationsNested(): array
     {
-        $query->with([
+        return [
             'projectType' => function ($q) {
                 $q->with('serviceType');
             },
             'branch' => function ($q) {
                 $q->with(['company', 'country']);
-            }
-        ])->orderBy('name');
+            },
+        ];
+    }
+
+    public function scopeListAllOrdered(Builder $query)
+    {
+        $query->with($this->relationsNested())->orderBy('name');
     }
 }

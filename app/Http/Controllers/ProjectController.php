@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
@@ -21,20 +22,10 @@ class ProjectController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreProjectRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreProjectRequest $request)
     {
@@ -44,31 +35,31 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param  Project  $project
+     * @return Response|Project
      */
-    public function show(Project $project)
+    public function show(Project $project): Response|Project
     {
-        //
+        return $project->load($project->relationsNested());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param  Project  $project
+     * @return Response|Project
      */
-    public function edit(Project $project)
+    public function edit(Project $project): Response|Project
     {
-        //
+        return $project->load($project->relationsNested());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateProjectRequest  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param UpdateProjectRequest $request
+     * @param  Project  $project
+     * @return Response
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
@@ -78,8 +69,8 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param  Project  $project
+     * @return Response
      */
     public function destroy(Project $project)
     {

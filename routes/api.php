@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/branches/{branch}/edit', [App\Http\Controllers\BranchController::class, 'edit'])->withTrashed()->name('branches.edit');
         Route::put('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'update'])->withTrashed()->name('branches.update');
         Route::delete('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'destroy'])->withTrashed()->name('branches.destroy');
+        Route::get('/branches/getCompanies/byCountry/{id}', [App\Http\Controllers\BranchController::class, 'getCompaniesByCountry'])->withTrashed()->name('branches.get_companies_by_country');
     });
 
     Route::group(['middleware' => ['role:All|Project Admin']], function () {
