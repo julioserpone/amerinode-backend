@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('service_type_id')->constrained('service_types');
             $table->string('description');
+            $table->string('status')->default('active');
             $table->softDeletes();
             $table->timestamps();
         });
