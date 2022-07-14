@@ -8,7 +8,6 @@ use App\Models\Branch;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class BranchController extends Controller
@@ -96,12 +95,6 @@ class BranchController extends Controller
         $branch->save();
 
         return response()->json(__('notification.updated', ['attribute' => 'branch']));
-    }
-
-    public function getCompaniesByCountry(Request $request): JsonResponse
-    {
-        $companies = Branch::where('country_id', $request->id)->get();
-        return $companies;
     }
 
     /**
