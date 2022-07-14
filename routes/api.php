@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/companies/{company}/edit', [App\Http\Controllers\CompanyController::class, 'edit'])->withTrashed()->name('companies.edit');
         Route::put('/companies/{company}', [App\Http\Controllers\CompanyController::class, 'update'])->withTrashed()->name('companies.update');
         Route::delete('/companies/{company}', [App\Http\Controllers\CompanyController::class, 'destroy'])->withTrashed()->name('companies.destroy');
+        Route::get('/companies/byCountry/{idCountry}', [App\Http\Controllers\CompanyController::class, 'companiesByCountry'])->withTrashed()->name('companies.companies_by_country');
 
         Route::get('/countries/', [App\Http\Controllers\CountryController::class, 'index'])->name('countries.index');
         Route::get('/countries/available', [App\Http\Controllers\CountryController::class, 'available'])->name('countries.available');
@@ -83,7 +84,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/branches/{branch}/edit', [App\Http\Controllers\BranchController::class, 'edit'])->withTrashed()->name('branches.edit');
         Route::put('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'update'])->withTrashed()->name('branches.update');
         Route::delete('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'destroy'])->withTrashed()->name('branches.destroy');
-        Route::get('/branches/getCompanies/byCountry/{id}', [App\Http\Controllers\BranchController::class, 'getCompaniesByCountry'])->withTrashed()->name('branches.get_companies_by_country');
     });
 
     Route::group(['middleware' => ['role:All|Project Admin']], function () {

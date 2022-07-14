@@ -20,4 +20,9 @@ class Company extends Model
         'description',
         'status',
     ];
+
+    public function countries()
+    {
+        return $this->belongsToMany(Country::class, 'branches');
+    }
 }

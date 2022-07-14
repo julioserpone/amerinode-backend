@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CompanyController extends Controller
@@ -98,5 +100,16 @@ class CompanyController extends Controller
         $company->save();
 
         return response()->json(__('notification.inactivated', ['attribute' => 'company']));
+    }
+
+    /**
+     * @param Request $request
+     * @return Company[]|mixed
+     */
+    public function companiesByCountry($idCountry)
+    {
+        $country = Country::withCompaniesActives()->whereId($idCountry)->first();
+
+        return $country->companies;
     }
 }

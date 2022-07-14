@@ -26,6 +26,11 @@ class Country extends Model
         'flag_url',
     ];
 
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'branches');
+    }
+
     /**
      * Scope a query to countries actives.
      *
@@ -38,7 +43,7 @@ class Country extends Model
     }
 
     /**
-     * Scope a query to countries actives.
+     * Scope a query to countries without timestamps.
      *
      * @param  Builder  $query
      * @return Builder
@@ -54,5 +59,18 @@ class Country extends Model
             'calling_code',
             'flag_url',
         ]);
+    }
+
+    /**
+     * Scope a query to active companies of a country
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeWithCompaniesActives(Builder $query)
+    {
+        $query->with(['companies' => function ($q){
+            $q->where('branches.status', 'active');
+        }]);
     }
 }
