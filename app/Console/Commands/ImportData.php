@@ -86,6 +86,7 @@ class ImportData extends Command
             16 => ['name' => 'warehouse-operation', 'description' => 'Warehouse operations'],
             17 => ['name' => 'admin-project', 'description' => 'Manage projects'],
             18 => ['name' => 'admin-ticket-package', 'description' => 'Manage ticket package'],
+            19 => ['name' => 'admin-branches', 'description' => 'Manage branches'],
         ];
 
         //Assign permissions by role
@@ -115,7 +116,7 @@ class ImportData extends Command
                 'description' => 'Manages Tickets and generates Reports',
             ],
             'Project Admin' => [
-                'permissions' => [17],
+                'permissions' => [17, 19],
                 'description' => 'Project Management',
             ],
             'Questions' => [
