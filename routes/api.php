@@ -55,6 +55,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('/oems/{oem}', [App\Http\Controllers\OemController::class, 'update'])->withTrashed()->name('oems.update');
         Route::delete('/oems/{oem}', [App\Http\Controllers\OemController::class, 'destroy'])->withTrashed()->name('oems.destroy');
 
+        Route::get('/service-types/', [App\Http\Controllers\ServiceTypeController::class, 'index'])->name('service_type.index');
+        Route::post('/service-types/', [App\Http\Controllers\ServiceTypeController::class, 'store'])->name('service_type.store');
+        Route::get('/service-types/{service_type}', [App\Http\Controllers\ServiceTypeController::class, 'show'])->withTrashed()->name('service_type.show');
+        Route::get('/service-types/{service_type}/edit', [App\Http\Controllers\ServiceTypeController::class, 'edit'])->withTrashed()->name('service_type.edit');
+        Route::put('/service-types/{service_type}', [App\Http\Controllers\ServiceTypeController::class, 'update'])->withTrashed()->name('service_type.update');
+        Route::delete('/service-types/{service_type}', [App\Http\Controllers\ServiceTypeController::class, 'destroy'])->withTrashed()->name('service_type.destroy');
+
         Route::get('/statuses/', [App\Http\Controllers\StatusController::class, 'index'])->name('statuses.index');
         Route::post('/statuses/', [App\Http\Controllers\StatusController::class, 'store'])->name('statuses.store');
         Route::get('/statuses/{status}', [App\Http\Controllers\StatusController::class, 'show'])->withTrashed()->name('statuses.show');
