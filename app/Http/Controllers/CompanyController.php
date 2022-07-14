@@ -103,7 +103,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Company[]|mixed
      */
     public function companiesByCountry($idCountry)

@@ -69,7 +69,7 @@ class Country extends Model
      */
     public function scopeWithCompaniesActives(Builder $query)
     {
-        $query->with(['companies' => function ($q){
+        $query->with(['companies' => function ($q) {
             $q->where('branches.status', 'active');
         }]);
     }
