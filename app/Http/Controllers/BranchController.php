@@ -19,7 +19,7 @@ class BranchController extends Controller
      */
     public function index(): Collection|array
     {
-        return Branch::listAllOrdered()->get();
+        return Branch::listAllOrdered()->withTrashed()->get();
     }
 
     /**
