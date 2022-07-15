@@ -52,4 +52,26 @@ class Project extends Model
     {
         $query->with($this->relationsNested())->orderBy('name');
     }
+
+    /**
+     * @param  Builder  $query
+     * @param  string  $project_type_id
+     * @param  string  $branch_id
+     * @param  string  $name
+     * @param  string  $description
+     * @param  string|null  $id
+     * @return Builder
+     */
+    public function scopeDuplicate(Builder $query, string $project_type_id, string $branch_id, string $name, string $description, string $id = null): Builder
+    {
+        if ($id) {
+            $query->where('id', '<>', $id);
+        }
+
+        return $query
+            ->where('name', $name)
+            ->where('description', $description)
+            ->where('project_type_id', $project_type_id)
+            ->where('branch_id', $branch_id);
+    }
 }
