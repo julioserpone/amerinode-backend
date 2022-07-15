@@ -32,7 +32,7 @@ class ProjectTypeController extends Controller
     {
         $service_type = ProjectType::create([
             'description' => $request->project_type['description'],
-            'service_type_id' => $request->service_type['id']
+            'service_type_id' => $request->service_type['id'],
         ]);
 
         $service_type->status = $request->status['id'];
@@ -81,7 +81,7 @@ class ProjectTypeController extends Controller
         }
         $project_type->update([
             'description' => $request->project_type['description'],
-            'service_type_id' => $request->service_type['id']
+            'service_type_id' => $request->service_type['id'],
         ]);
         $project_type->status = $request->status['id'];
         $project_type->save();
