@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Aws\Api\Service;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,5 +27,18 @@ class ProjectType extends Model
     public function serviceType(): BelongsTo
     {
         return $this->belongsTo(ServiceType::class);
+    }
+
+    /**
+     * Scope a query to project types with service types.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeAllWithServiceType(Builder $query)
+    {
+        return $query->withTrashed()->with(['serviceType' => function ($q) {
+            $q->withTrashed();
+        }]);
     }
 }

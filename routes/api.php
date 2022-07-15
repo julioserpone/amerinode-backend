@@ -62,6 +62,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('/service-types/{service_type}', [App\Http\Controllers\ServiceTypeController::class, 'update'])->withTrashed()->name('service_type.update');
         Route::delete('/service-types/{service_type}', [App\Http\Controllers\ServiceTypeController::class, 'destroy'])->withTrashed()->name('service_type.destroy');
 
+        Route::get('/project-types/', [App\Http\Controllers\ProjectTypeController::class, 'index'])->name('project_type.index');
+        Route::post('/project-types/', [App\Http\Controllers\ProjectTypeController::class, 'store'])->name('project_type.store');
+        Route::get('/project-types/{project_type}', [App\Http\Controllers\ProjectTypeController::class, 'show'])->withTrashed()->name('project_type.show');
+        Route::get('/project-types/{project_type}/edit', [App\Http\Controllers\ProjectTypeController::class, 'edit'])->withTrashed()->name('project_type.edit');
+        Route::put('/project-types/{project_type}', [App\Http\Controllers\ProjectTypeController::class, 'update'])->withTrashed()->name('project_type.update');
+        Route::delete('/project-types/{project_type}', [App\Http\Controllers\ProjectTypeController::class, 'destroy'])->withTrashed()->name('project_type.destroy');
+
         Route::get('/statuses/', [App\Http\Controllers\StatusController::class, 'index'])->name('statuses.index');
         Route::post('/statuses/', [App\Http\Controllers\StatusController::class, 'store'])->name('statuses.store');
         Route::get('/statuses/{status}', [App\Http\Controllers\StatusController::class, 'show'])->withTrashed()->name('statuses.show');
