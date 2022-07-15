@@ -187,6 +187,8 @@ return [
         'service_type.description' => 'description',
         'project_type.description' => 'description',
         'oem.description' => 'description',
+        'project.name' => 'name',
+        'project.description' => 'description',
         'data.description' => 'description',
         'data.module' => 'module',
     ],
