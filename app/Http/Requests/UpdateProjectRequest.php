@@ -13,7 +13,7 @@ class UpdateProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class UpdateProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'project.name' => 'required|max:100|regex:[^([a-zA-Z0-9áéíóúñÁÉÍÓÚÑ.,\-\+\&()\s])*$]',
+            'project.description' => 'required|max:100|regex:[^([a-zA-Z0-9áéíóúñÁÉÍÓÚÑ.,\-\+\&()\s])*$]',
         ];
     }
 }
