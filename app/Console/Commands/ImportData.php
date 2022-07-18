@@ -9,6 +9,7 @@ use App\Models\Oem;
 use App\Models\Project;
 use App\Models\ProjectType;
 use App\Models\ServiceType;
+use App\Models\Severity;
 use App\Models\Status;
 use App\Models\Technology;
 use Illuminate\Console\Command;
@@ -52,6 +53,7 @@ class ImportData extends Command
         $this->importStatuses();
         $this->importServiceTypes();
         $this->importProjectTypes();
+        $this->importSeverities();
         $this->importProjects();
         $this->hackGuardRoles();
 
@@ -428,6 +430,25 @@ class ImportData extends Command
                     'description' => $projectSQL->Description,
                 ]);
             }
+        }
+    }
+
+    /**
+     * Importing Severities from SQL Server
+     *
+     * @return void
+     */
+    private function importSeverities(): void
+    {
+        $severities = [
+            ['code' => 'P1', 'name' => 'Critical', 'description' => 'Critical P1', 'color' => '#ff0000'],
+            ['code' => 'P2', 'name' => 'High', 'description' => 'High P2', 'color' => '#ffc100'],
+            ['code' => 'P3', 'name' => 'Medium', 'description' => 'Medium P3', 'color' => '#ffff00'],
+            ['code' => 'P4', 'name' => 'Low', 'description' => 'Low P4', 'color' => '#00cd00'],
+        ];
+
+        foreach ($severities as $severity) {
+            Severity::create($severity);
         }
     }
 
