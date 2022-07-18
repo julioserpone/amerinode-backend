@@ -31,7 +31,25 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request): JsonResponse
     {
-        //
+        $branch = Branch::where('country_id', $request->country['id'])
+            ->where('company_id', $request->company['id'])
+            ->first();
+
+        $duplicate = Project::duplicate($request->project_type['id'], $branch->id, $request->project['name'], $request->project['description'])->first();
+
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+
+        Project::create([
+            'name' => $request->project['name'],
+            'description' => $request->project['description'],
+            'project_type_id' => $request->project_type['id'],
+            'branch_id' => $branch->id,
+            'status' => $request->status['id'],
+        ]);
+
+        return response()->json(__('notification.created', ['attribute' => 'project']));
     }
 
     /**
