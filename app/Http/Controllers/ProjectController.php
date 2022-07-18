@@ -94,6 +94,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project): JsonResponse
     {
-        //
+        $project->delete();
+        $project->status = 'inactive';
+        $project->save();
+
+        return response()->json(__('notification.inactivated', ['attribute' => 'project']));
     }
 }
