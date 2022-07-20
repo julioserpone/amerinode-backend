@@ -13,7 +13,7 @@ class StoreSeverityRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,14 @@ class StoreSeverityRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'data.code' => 'required|max:50|regex:[^([a-zA-Z0-9áéíóúñÁÉÍÓÚÑ\-\_\s])*$]',
+            'data.name' => 'required|max:50|regex:[^([a-zA-Z0-9áéíóúñÁÉÍÓÚÑ\-\_\s])*$]',
+            'data.description' => 'required|max:50|regex:[^([a-zA-Z0-9áéíóúñÁÉÍÓÚÑ\-\_\s])*$]',
+            'color' => [
+                'required',
+                'max:7',
+                'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+            ],
         ];
     }
 }

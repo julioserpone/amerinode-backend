@@ -189,6 +189,9 @@ return [
         'oem.description' => 'description',
         'project.name' => 'name',
         'project.description' => 'description',
+
+        'data.code' => 'code',
+        'data.name' => 'name',
         'data.description' => 'description',
         'data.module' => 'module',
     ],
