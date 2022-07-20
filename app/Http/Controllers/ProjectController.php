@@ -4,83 +4,118 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Branch;
 use App\Models\Project;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Builder[]|Collection
      */
-    public function index()
+    public function index(): Collection|array
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Project::listAllOrdered()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreProjectRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreProjectRequest  $request
+     * @return JsonResponse
      */
-    public function store(StoreProjectRequest $request)
+    public function store(StoreProjectRequest $request): JsonResponse
     {
-        //
+        $branch = Branch::where('country_id', $request->country['id'])
+            ->where('company_id', $request->company['id'])
+            ->first();
+
+        $duplicate = Project::duplicate($request->project_type['id'], $branch->id, $request->project['name'], $request->project['description'])->first();
+
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+
+        Project::create([
+            'name' => $request->project['name'],
+            'description' => $request->project['description'],
+            'project_type_id' => $request->project_type['id'],
+            'branch_id' => $branch->id,
+            'status' => $request->status['id'],
+        ]);
+
+        return response()->json(__('notification.created', ['attribute' => 'project']));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param  Project  $project
+     * @return Response|Project
      */
-    public function show(Project $project)
+    public function show(Project $project): Response|Project
     {
-        //
+        return $project->load($project->relationsNested());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param  Project  $project
+     * @return Response|Project
      */
-    public function edit(Project $project)
+    public function edit(Project $project): Response|Project
     {
-        //
+        return $project->load($project->relationsNested());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateProjectRequest  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param  UpdateProjectRequest  $request
+     * @param  Project  $project
+     * @return JsonResponse
      */
-    public function update(UpdateProjectRequest $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project): JsonResponse
     {
-        //
+        $branch = Branch::where('country_id', $request->country['id'])
+            ->where('company_id', $request->company['id'])
+            ->first();
+
+        $duplicate = Project::duplicate($request->project_type['id'], $branch->id, $request->project['name'], $request->project['description'], $project->id)->first();
+
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+
+        $project->update([
+            'name' => $request->project['name'],
+            'description' => $request->project['description'],
+            'project_type_id' => $request->project_type['id'],
+            'branch_id' => $branch->id,
+            'status' => $request->status['id'],
+        ]);
+
+        return response()->json(__('notification.updated', ['attribute' => 'project']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param  Project  $project
+     * @return JsonResponse
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project): JsonResponse
     {
-        //
+        $project->delete();
+        $project->status = 'inactive';
+        $project->save();
+
+        return response()->json(__('notification.inactivated', ['attribute' => 'project']));
     }
 }

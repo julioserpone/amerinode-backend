@@ -47,7 +47,13 @@ class Branch extends Model
             $query->where('id', '<>', $id);
         }
 
-        return $query->where('country_id', $country['id'])
-            ->where('description', $company['id']);
+        return $query
+            ->where('country_id', $country['id'])
+            ->where('company_id', $company['id']);
+    }
+
+    public function scopeListAllOrdered(Builder $query)
+    {
+        $query->with(['country', 'company'])->orderBy('country_id');
     }
 }

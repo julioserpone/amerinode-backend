@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
-class StoreProjectRequest extends FormRequest
+class UpdateServiceTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,13 +20,18 @@ class StoreProjectRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * @param  Request  $request
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
-            'project.name' => 'required|max:100|regex:[^([a-zA-Z0-9áéíóúñÁÉÍÓÚÑ.,\-\+\&()\s])*$]',
-            'project.description' => 'required|max:100|regex:[^([a-zA-Z0-9áéíóúñÁÉÍÓÚÑ.,\-\+\&()\s])*$]',
+            'service_type.description' => [
+                'required',
+                'max:50',
+                'regex:[^([a-zA-ZáéíóúñÁÉÍÓÚÑ\s])*$]',
+                'unique:service_types,description,'.$request['service_type.id'],
+            ],
         ];
     }
 }

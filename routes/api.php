@@ -55,6 +55,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('/oems/{oem}', [App\Http\Controllers\OemController::class, 'update'])->withTrashed()->name('oems.update');
         Route::delete('/oems/{oem}', [App\Http\Controllers\OemController::class, 'destroy'])->withTrashed()->name('oems.destroy');
 
+        Route::get('/service-types/', [App\Http\Controllers\ServiceTypeController::class, 'index'])->name('service_type.index');
+        Route::post('/service-types/', [App\Http\Controllers\ServiceTypeController::class, 'store'])->name('service_type.store');
+        Route::get('/service-types/{service_type}', [App\Http\Controllers\ServiceTypeController::class, 'show'])->withTrashed()->name('service_type.show');
+        Route::get('/service-types/{service_type}/edit', [App\Http\Controllers\ServiceTypeController::class, 'edit'])->withTrashed()->name('service_type.edit');
+        Route::put('/service-types/{service_type}', [App\Http\Controllers\ServiceTypeController::class, 'update'])->withTrashed()->name('service_type.update');
+        Route::delete('/service-types/{service_type}', [App\Http\Controllers\ServiceTypeController::class, 'destroy'])->withTrashed()->name('service_type.destroy');
+
+        Route::get('/project-types/', [App\Http\Controllers\ProjectTypeController::class, 'index'])->name('project_type.index');
+        Route::post('/project-types/', [App\Http\Controllers\ProjectTypeController::class, 'store'])->name('project_type.store');
+        Route::get('/project-types/{project_type}', [App\Http\Controllers\ProjectTypeController::class, 'show'])->withTrashed()->name('project_type.show');
+        Route::get('/project-types/{project_type}/edit', [App\Http\Controllers\ProjectTypeController::class, 'edit'])->withTrashed()->name('project_type.edit');
+        Route::put('/project-types/{project_type}', [App\Http\Controllers\ProjectTypeController::class, 'update'])->withTrashed()->name('project_type.update');
+        Route::delete('/project-types/{project_type}', [App\Http\Controllers\ProjectTypeController::class, 'destroy'])->withTrashed()->name('project_type.destroy');
+
         Route::get('/statuses/', [App\Http\Controllers\StatusController::class, 'index'])->name('statuses.index');
         Route::post('/statuses/', [App\Http\Controllers\StatusController::class, 'store'])->name('statuses.store');
         Route::get('/statuses/{status}', [App\Http\Controllers\StatusController::class, 'show'])->withTrashed()->name('statuses.show');
@@ -68,6 +82,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/companies/{company}/edit', [App\Http\Controllers\CompanyController::class, 'edit'])->withTrashed()->name('companies.edit');
         Route::put('/companies/{company}', [App\Http\Controllers\CompanyController::class, 'update'])->withTrashed()->name('companies.update');
         Route::delete('/companies/{company}', [App\Http\Controllers\CompanyController::class, 'destroy'])->withTrashed()->name('companies.destroy');
+        Route::get('/companies/byCountry/{idCountry}', [App\Http\Controllers\CompanyController::class, 'companiesByCountry'])->withTrashed()->name('companies.companies_by_country');
 
         Route::get('/countries/', [App\Http\Controllers\CountryController::class, 'index'])->name('countries.index');
         Route::get('/countries/available', [App\Http\Controllers\CountryController::class, 'available'])->name('countries.available');
@@ -83,6 +98,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/branches/{branch}/edit', [App\Http\Controllers\BranchController::class, 'edit'])->withTrashed()->name('branches.edit');
         Route::put('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'update'])->withTrashed()->name('branches.update');
         Route::delete('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'destroy'])->withTrashed()->name('branches.destroy');
+
+        Route::get('/severities/', [App\Http\Controllers\SeverityController::class, 'index'])->name('severities.index');
+        Route::post('/severities/', [App\Http\Controllers\SeverityController::class, 'store'])->name('severities.store');
+        Route::get('/severities/{severity}', [App\Http\Controllers\SeverityController::class, 'show'])->withTrashed()->name('severities.show');
+        Route::get('/severities/{severity}/edit', [App\Http\Controllers\SeverityController::class, 'edit'])->withTrashed()->name('severities.edit');
+        Route::put('/severities/{severity}', [App\Http\Controllers\SeverityController::class, 'update'])->withTrashed()->name('severities.update');
+        Route::delete('/severities/{severity}', [App\Http\Controllers\SeverityController::class, 'destroy'])->withTrashed()->name('severities.destroy');
     });
+
+    Route::group(['middleware' => ['role:All|Project Admin']], function () {
+        Route::get('/projects/', [App\Http\Controllers\ProjectController::class, 'index'])->name('projects.index');
+        Route::post('/projects/', [App\Http\Controllers\ProjectController::class, 'store'])->name('projects.store');
+        Route::get('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'show'])->withTrashed()->name('projects.show');
+        Route::get('/projects/{project}/edit', [App\Http\Controllers\ProjectController::class, 'edit'])->withTrashed()->name('projects.edit');
+        Route::put('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'update'])->withTrashed()->name('projects.update');
+        Route::delete('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'destroy'])->withTrashed()->name('projects.destroy');
+    });
+
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });

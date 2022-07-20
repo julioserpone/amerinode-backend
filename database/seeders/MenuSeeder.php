@@ -59,11 +59,18 @@ class MenuSeeder extends Seeder
                 'roles' => ['All', 'Master'],
             ],
             [
+                'name' => 'BranchesPage',
+                'description' => 'Branches',
+                'icon' => 'TemplateIcon',
+                'href' => '/branches',
+                'roles' => ['All', 'Project Admin'],
+            ],
+            [
                 'name' => 'ProjectsPage',
                 'description' => 'Projects',
                 'icon' => 'FolderOpenIcon',
                 'href' => '/projects',
-                'roles' => ['All', 'Master', 'Project Admin'],
+                'roles' => ['All', 'Project Admin'],
             ],
             [
                 'name' => 'RolesPage',

@@ -9,8 +9,10 @@ use App\Models\Oem;
 use App\Models\Project;
 use App\Models\ProjectType;
 use App\Models\ServiceType;
+use App\Models\Severity;
 use App\Models\Status;
 use App\Models\Technology;
+use App\Models\Unit;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +54,9 @@ class ImportData extends Command
         $this->importStatuses();
         $this->importServiceTypes();
         $this->importProjectTypes();
+        $this->importSeverities();
         $this->importProjects();
+        $this->importUnits();
         $this->hackGuardRoles();
 
         $this->info('The process import command was successful!');
@@ -86,6 +90,7 @@ class ImportData extends Command
             16 => ['name' => 'warehouse-operation', 'description' => 'Warehouse operations'],
             17 => ['name' => 'admin-project', 'description' => 'Manage projects'],
             18 => ['name' => 'admin-ticket-package', 'description' => 'Manage ticket package'],
+            19 => ['name' => 'admin-branches', 'description' => 'Manage branches'],
         ];
 
         //Assign permissions by role
@@ -115,7 +120,7 @@ class ImportData extends Command
                 'description' => 'Manages Tickets and generates Reports',
             ],
             'Project Admin' => [
-                'permissions' => [17],
+                'permissions' => [17, 19],
                 'description' => 'Project Management',
             ],
             'Questions' => [
@@ -420,12 +425,55 @@ class ImportData extends Command
         if ($projectsSQL) {
             foreach ($projectsSQL as $projectSQL) {
                 Project::create([
+                    'projectId' => $projectSQL->ID,
                     'project_type_id' => ProjectType::where('description', $projectSQL->ProjectType)->first()->id,
                     'branch_id' => Branch::where('branchId', $projectSQL->BranchID2)->first()->id,
                     'name' => $projectSQL->Project,
                     'description' => $projectSQL->Description,
                 ]);
             }
+        }
+    }
+
+    /**
+     * Importing Severities from SQL Server
+     *
+     * @return void
+     */
+    private function importSeverities(): void
+    {
+        $severities = [
+            ['code' => 'P1', 'name' => 'Critical', 'description' => 'Critical P1', 'color' => '#ff0000'],
+            ['code' => 'P2', 'name' => 'High', 'description' => 'High P2', 'color' => '#ffc100'],
+            ['code' => 'P3', 'name' => 'Medium', 'description' => 'Medium P3', 'color' => '#ffff00'],
+            ['code' => 'P4', 'name' => 'Low', 'description' => 'Low P4', 'color' => '#00cd00'],
+        ];
+
+        foreach ($severities as $severity) {
+            Severity::create($severity);
+        }
+    }
+
+    /**
+     * Importing units to SLA
+     *
+     * @return void
+     */
+    private function importUnits(): void
+    {
+        $units = [
+            ['name' => 'minute', 'unit' => 'minutes', 'description' => 'Minutes', 'type' => 'time', 'factor_conversion' => 60],
+            ['name' => 'hour', 'unit' => 'hours', 'description' => 'Hours', 'type' => 'time', 'factor_conversion' => 3600],
+            ['name' => 'working hour', 'unit' => 'WH', 'description' => 'Workings Hours', 'type' => 'time', 'factor_conversion' => 3600],
+            ['name' => 'calendar days', 'unit' => 'CD', 'description' => 'Calendar days', 'type' => 'time,resolution', 'factor_conversion' => 86400, 'weekdays' => false],
+            ['name' => 'week', 'unit' => 'week', 'description' => 'Weeks', 'type' => 'time', 'factor_conversion' => 604800, 'weekdays' => false],
+            ['name' => '24*7', 'unit' => '24*7', 'description' => 'This refers to availability at all hours', 'type' => 'availability', 'factor_conversion' => null, 'weekdays' => false],
+            ['name' => '8*5', 'unit' => '8*5', 'description' => 'This refers to availability working hours only', 'type' => 'availability', 'factor_conversion' => null, 'weekdays' => false],
+            ['name' => 'N/A', 'unit' => 'N/A', 'description' => 'Not available', 'type' => 'time,resolution,availability', 'factor_conversion' => null, 'weekdays' => false],
+        ];
+
+        foreach ($units as $unit) {
+            Unit::create($unit);
         }
     }
 

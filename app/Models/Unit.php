@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Company extends Model
+class Unit extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -16,13 +16,11 @@ class Company extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'companyId',
+        'name',
+        'unit',
         'description',
-        'status',
+        'type',
+        'factor_conversion',
+        'weekdays',
     ];
-
-    public function countries()
-    {
-        return $this->belongsToMany(Country::class, 'branches');
-    }
 }

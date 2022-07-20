@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Aws\Api\Service;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProjectType extends Model
+class Severity extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -19,26 +17,27 @@ class ProjectType extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'service_type_id',
+        'code',
+        'name',
         'description',
+        'color',
         'status',
     ];
 
-    public function serviceType(): BelongsTo
-    {
-        return $this->belongsTo(ServiceType::class);
-    }
-
     /**
-     * Scope a query to project types with service types.
-     *
      * @param  Builder  $query
+     * @param  array  $model
+     * @param  string|null  $id
      * @return Builder
      */
-    public function scopeAllWithServiceType(Builder $query)
+    public function scopeDuplicate(Builder $query, array $model, string $id = null): Builder
     {
-        return $query->withTrashed()->with(['serviceType' => function ($q) {
-            $q->withTrashed();
-        }]);
+        if ($id) {
+            $query->where('id', '<>', $id);
+        }
+
+        return $query->where('code', $model['code'])
+            ->where('name', $model['name'])
+            ->where('description', $model['description']);
     }
 }

@@ -184,7 +184,14 @@ return [
 
         'technology.description' => 'description',
         'company.description' => 'description',
+        'service_type.description' => 'description',
+        'project_type.description' => 'description',
         'oem.description' => 'description',
+        'project.name' => 'name',
+        'project.description' => 'description',
+
+        'data.code' => 'code',
+        'data.name' => 'name',
         'data.description' => 'description',
         'data.module' => 'module',
     ],

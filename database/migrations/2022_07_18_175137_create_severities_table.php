@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('project_types', function (Blueprint $table) {
+        Schema::create('severities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('service_type_id')->constrained('service_types');
-            $table->string('description');
+            $table->string('code', 50);
+            $table->string('name', 50);
+            $table->string('description', 100);
             $table->string('status')->default('active');
+            $table->string('color', 7);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_types');
+        Schema::dropIfExists('severities');
     }
 };
