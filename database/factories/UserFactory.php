@@ -18,14 +18,14 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
-            'username' => $this->faker->unique()->userName(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'name' => fake()->name(),
+            'username' => fake()->unique()->userName(),
+            'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
-            'title' => $this->faker->title(),
-            'work_phone' => $this->faker->phoneNumber(),
-            'mobile_phone' => $this->faker->phoneNumber(),
+            'title' => fake()->title(),
+            'work_phone' => fake()->phoneNumber(),
+            'mobile_phone' => fake()->phoneNumber(),
             'status' => 'active',
         ];
     }
