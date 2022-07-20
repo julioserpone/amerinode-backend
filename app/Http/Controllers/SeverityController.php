@@ -5,82 +5,108 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSeverityRequest;
 use App\Http\Requests\UpdateSeverityRequest;
 use App\Models\Severity;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class SeverityController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Builder[]|Collection
      */
-    public function index()
+    public function index(): Collection|array
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Severity::withTrashed()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSeverityRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreSeverityRequest  $request
+     * @return JsonResponse
      */
-    public function store(StoreSeverityRequest $request)
+    public function store(StoreSeverityRequest $request): JsonResponse
     {
-        //
+        $duplicate = Severity::duplicate($request->data)->first();
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+        Severity::create([
+            'code' => $request->data['code'],
+            'name' => $request->data['name'],
+            'description' => $request->data['description'],
+            'color' => $request->data['color'],
+            'status' => $request->status['id'],
+        ]);
+
+        return response()->json(__('notification.created', ['attribute' => 'severity']));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Severity  $severity
-     * @return \Illuminate\Http\Response
+     * @param  Severity  $severity
+     * @return Response|Severity
      */
-    public function show(Severity $severity)
+    public function show(Severity $severity): Response|Severity
     {
-        //
+        return $severity;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Severity  $severity
-     * @return \Illuminate\Http\Response
+     * @param  Severity  $severity
+     * @return Response|Severity
      */
-    public function edit(Severity $severity)
+    public function edit(Severity $severity): Response|Severity
     {
-        //
+        return $severity;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSeverityRequest  $request
-     * @param  \App\Models\Severity  $severity
-     * @return \Illuminate\Http\Response
+     * @param  UpdateSeverityRequest  $request
+     * @param  Severity  $severity
+     * @return JsonResponse
      */
-    public function update(UpdateSeverityRequest $request, Severity $severity)
+    public function update(UpdateSeverityRequest $request, Severity $severity): JsonResponse
     {
-        //
+        $duplicate = Severity::duplicate($request->data, $severity->id)->first();
+        if ($duplicate) {
+            return response()->json(['message' => __('notification.duplicated')], 409);
+        }
+        if ($request->status['id'] == 'active') {
+            if ($severity->trashed()) {
+                $severity->restore();
+            }
+        } else {
+            $severity->delete();
+        }
+
+        $severity->update($request->data);
+        $severity->status = $request->status['id'];
+        $severity->save();
+
+        return response()->json(__('notification.updated', ['attribute' => 'severity']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Severity  $severity
-     * @return \Illuminate\Http\Response
+     * @param  Severity  $severity
+     * @return JsonResponse
      */
-    public function destroy(Severity $severity)
+    public function destroy(Severity $severity): JsonResponse
     {
-        //
+        $severity->delete();
+        $severity->status = 'inactive';
+        $severity->save();
+
+        return response()->json(__('notification.inactivated', ['attribute' => 'severity']));
     }
 }

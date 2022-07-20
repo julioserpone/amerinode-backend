@@ -98,6 +98,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/branches/{branch}/edit', [App\Http\Controllers\BranchController::class, 'edit'])->withTrashed()->name('branches.edit');
         Route::put('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'update'])->withTrashed()->name('branches.update');
         Route::delete('/branches/{branch}', [App\Http\Controllers\BranchController::class, 'destroy'])->withTrashed()->name('branches.destroy');
+
+        Route::get('/severities/', [App\Http\Controllers\SeverityController::class, 'index'])->name('severities.index');
+        Route::post('/severities/', [App\Http\Controllers\SeverityController::class, 'store'])->name('severities.store');
+        Route::get('/severities/{severity}', [App\Http\Controllers\SeverityController::class, 'show'])->withTrashed()->name('severities.show');
+        Route::get('/severities/{severity}/edit', [App\Http\Controllers\SeverityController::class, 'edit'])->withTrashed()->name('severities.edit');
+        Route::put('/severities/{severity}', [App\Http\Controllers\SeverityController::class, 'update'])->withTrashed()->name('severities.update');
+        Route::delete('/severities/{severity}', [App\Http\Controllers\SeverityController::class, 'destroy'])->withTrashed()->name('severities.destroy');
     });
 
     Route::group(['middleware' => ['role:All|Project Admin']], function () {
