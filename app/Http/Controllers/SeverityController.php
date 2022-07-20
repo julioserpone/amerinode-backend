@@ -38,7 +38,7 @@ class SeverityController extends Controller
             'code' => $request->data['code'],
             'name' => $request->data['name'],
             'description' => $request->data['description'],
-            'color' => $request->data['color'],
+            'color' => $request->color,
             'status' => $request->status['id'],
         ]);
 
@@ -89,6 +89,7 @@ class SeverityController extends Controller
         }
 
         $severity->update($request->data);
+        $severity->color = $request->color;
         $severity->status = $request->status['id'];
         $severity->save();
 
