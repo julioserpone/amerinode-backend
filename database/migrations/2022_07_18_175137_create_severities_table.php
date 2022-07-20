@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('severities', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->string('code', 50);
             $table->string('name', 50);
             $table->string('description', 100);
             $table->string('status')->default('active');
