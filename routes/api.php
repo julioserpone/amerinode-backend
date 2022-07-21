@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
 
 Route::get('/countries/available/public', [App\Http\Controllers\CountryController::class, 'available'])->name('countries.available.public');
+Route::get('/slas/public', [App\Http\Controllers\SlaController::class, 'index'])->name('slas.index.public');
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

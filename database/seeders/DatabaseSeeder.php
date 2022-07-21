@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             MenuSeeder::class,
+            UnitSeeder::class,
+            SeveritySeeder::class,
+            SlaSeeder::class,
         ]);
 
         if (env('APP_ENV') !== 'production') {
