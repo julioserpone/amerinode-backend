@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Resolution extends Model
 {
@@ -20,4 +21,12 @@ class Resolution extends Model
         'time',
         'unit_id',
     ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

@@ -19,7 +19,7 @@ class SlaController extends Controller
      */
     public function index(): Collection|array
     {
-        return Sla::with(['infos'])->get();
+        return Sla::listAllOrdered()->get();
     }
 
     /**
