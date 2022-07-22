@@ -38,10 +38,10 @@ class MenuSeeder extends Seeder
                 'roles' => ['All', 'Master', 'Project Admin'],
             ],
             [
-                'name' => 'ManageSLAPage',
+                'name' => 'SlaPage',
                 'description' => 'Manage SLAs',
                 'icon' => 'PresentationChartLineIcon',
-                'href' => '/manage-sla',
+                'href' => '/sla',
                 'roles' => ['All', 'Master', 'Project Admin'],
             ],
             [
