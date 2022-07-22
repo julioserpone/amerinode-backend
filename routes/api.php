@@ -117,5 +117,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'destroy'])->withTrashed()->name('projects.destroy');
     });
 
+    Route::group(['middleware' => ['role:All|Master|Project Admin']], function () {
+        Route::get('/sla/', [App\Http\Controllers\SlaController::class, 'index'])->name('sla.index');
+        Route::post('/sla/', [App\Http\Controllers\SlaController::class, 'store'])->name('sla.store');
+        Route::get('/sla/{sla}', [App\Http\Controllers\SlaController::class, 'show'])->withTrashed()->name('sla.show');
+        Route::get('/sla/{sla}/edit', [App\Http\Controllers\SlaController::class, 'edit'])->withTrashed()->name('sla.edit');
+        Route::put('/sla/{sla}', [App\Http\Controllers\SlaController::class, 'update'])->withTrashed()->name('sla.update');
+        Route::delete('/sla/{sla}', [App\Http\Controllers\SlaController::class, 'destroy'])->withTrashed()->name('sla.destroy');
+    });
+
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });

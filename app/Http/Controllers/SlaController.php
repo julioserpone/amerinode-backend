@@ -41,7 +41,7 @@ class SlaController extends Controller
      */
     public function show(Sla $sla): Response|Sla
     {
-        return $sla;
+        return $sla->load($sla->relationsNested());
     }
 
     /**
@@ -52,7 +52,7 @@ class SlaController extends Controller
      */
     public function edit(Sla $sla): Response|Sla
     {
-        return $sla;
+        return $sla->load($sla->relationsNested());
     }
 
     /**
