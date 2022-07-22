@@ -24,7 +24,7 @@ class UnitSeeder extends Seeder
             ['name' => '8*5', 'unit' => 'hour', 'description' => 'This refers to availability working hours only', 'type' => 'availability', 'factor_conversion' => null, 'weekdays' => false],
             ['name' => 'next-business-day', 'unit' => 'day', 'description' => 'Next business day', 'type' => 'time,resolution', 'factor_conversion' => 86400, 'weekdays' => true],
             ['name' => 'next-release', 'unit' => 'next release', 'description' => 'Next release', 'type' => 'resolution', 'factor_conversion' => null, 'weekdays' => false],
-            ['name' => 'N/A', 'unit' => 'N/A', 'description' => 'Not available', 'type' => 'time,resolution,availability', 'factor_conversion' => null, 'weekdays' => false],
+            ['name' => 'not-available', 'unit' => 'N/A', 'description' => 'Not available', 'type' => 'time,resolution,availability', 'factor_conversion' => null, 'weekdays' => false],
         ];
 
         foreach ($units as $unit) {
