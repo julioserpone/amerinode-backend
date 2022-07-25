@@ -43,9 +43,9 @@ class Sla extends Model
                     },
                     'availabilities' => function ($q) {
                         $q->with('unit');
-                    }
+                    },
                 ]);
-            }
+            },
         ];
     }
 

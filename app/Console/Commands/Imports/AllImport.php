@@ -29,6 +29,7 @@ class AllImport extends Command
     {
         $this->call('import:roles');
         $this->call('import:parametric');
+
         return 1;
     }
 }
