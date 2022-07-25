@@ -17,9 +17,10 @@ class Resolution extends Model
      */
     protected $fillable = [
         'sla_info_id',
+        'unit_id',
         'name',
         'time',
-        'unit_id',
+        'precision',
     ];
 
     /**

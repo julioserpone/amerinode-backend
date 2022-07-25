@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('resolutions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sla_info_id')->constrained('sla_infos');
             $table->string('name', 20);
-            $table->float('time')->nullable();
+            $table->foreignId('sla_info_id')->constrained('sla_infos');
             $table->foreignId('unit_id')->constrained('units');
+            $table->float('time')->nullable();
+            $table->decimal('precision')->nullable();
             $table->timestamps();
         });
     }
