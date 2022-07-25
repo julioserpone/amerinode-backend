@@ -18,6 +18,7 @@ class Unit extends Model
     protected $fillable = [
         'name',
         'unit',
+        'nomenclature',
         'description',
         'type',
         'factor_conversion',

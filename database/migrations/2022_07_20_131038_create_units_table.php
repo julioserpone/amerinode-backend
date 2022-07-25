@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 30);
             $table->string('unit', 10);
+            $table->string('nomenclature')->nullable();
             $table->string('description', 100);
             $table->string('type')->nullable();
             $table->float('factor_conversion')->nullable();
