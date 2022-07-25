@@ -19,13 +19,13 @@ class SlaController extends Controller
      */
     public function index(): Collection|array
     {
-        return Sla::listAllOrdered()->get();
+        return Sla::listAllOrdered()->withTrashed()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreSlaRequest $request
+     * @param  StoreSlaRequest  $request
      * @return JsonResponse
      */
     public function store(StoreSlaRequest $request): JsonResponse
@@ -36,7 +36,7 @@ class SlaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Sla $sla
+     * @param  Sla  $sla
      * @return Response|Sla
      */
     public function show(Sla $sla): Response|Sla
@@ -47,7 +47,7 @@ class SlaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Sla $sla
+     * @param  Sla  $sla
      * @return Response|Sla
      */
     public function edit(Sla $sla): Response|Sla
@@ -58,8 +58,8 @@ class SlaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateSlaRequest $request
-     * @param Sla $sla
+     * @param  UpdateSlaRequest  $request
+     * @param  Sla  $sla
      * @return JsonResponse
      */
     public function update(UpdateSlaRequest $request, Sla $sla): JsonResponse
@@ -70,11 +70,15 @@ class SlaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Sla $availability
+     * @param  Sla  $sla
      * @return JsonResponse
      */
-    public function destroy(Sla $availability): JsonResponse
+    public function destroy(Sla $sla): JsonResponse
     {
-        //
+        $sla->delete();
+        $sla->status = 'inactive';
+        $sla->save();
+
+        return response()->json(__('notification.inactivated', ['attribute' => 'SLA']));
     }
 }
